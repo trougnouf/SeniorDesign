@@ -1,0 +1,32 @@
+Laser: UART (2pins) or i2c (fuck that), 5V power
+	
+
+GPS: UART (2 pins)
+	
+
+Bluetooth:
+MCU: UART_RTS, UART_CTS, UART_TX, UART_RX, 1GPIO
+mic: 3
+misc: 2 LEDs
+codec: SPI (4 pins) or PCM (4 pins)
+
+Codec:
+	MCU:
+		SDI	Serial Data Input
+		SCKR	Receiver Serial Clock
+		BIT_EN	GPIO: low=ignore incoming data
+	Bluetooth:
+		SDO	PCM Serial Data Output
+		SCKT	PCM Serial Clock Output
+		LRCLK	Left/Right Channel Selection Clock
+	Clock: 10, 14.31818, or 14.7456 MHz
+
+Camera
+
+RAM
+
+SD card
+
+Flash
+
+
