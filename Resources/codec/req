@@ -1,0 +1,24 @@
+Diagram from http://www.pjrc.com/mp3/sta013.html
+Not all of these are needed
+
+Resistors:
+	4.7		2
+	560		2
+	1M		1
+	1k		1
+	270k		2
+
+Capacitors:
+	0.1uF		6
+	3.3uF pol	2
+	0.0033uF	2	
+	470pF		1
+	18pF		2
+	10uF		1
+	0.0047uF	1
+
+Inductors:
+	470uH		1
+
+Crystals:
+	14.7456 MHz	1
