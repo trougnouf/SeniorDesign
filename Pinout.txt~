@@ -42,6 +42,8 @@ Flash: Micron Technology Inc. N25Q128A13ESE40E ( https://www.digikey.com/product
 Bank1 with Quad SPI Lines
 
 Microphone: MEMS Microphone - INMP401 ( https://www.sparkfun.com/products/10028 )
+	MCU: 1 analog pin (ADC)
+	VDD, GND
 
 Compass: 
 
@@ -51,3 +53,8 @@ Compass:
 Input: Camera, speak direction, target1, target2, target3
 BT
 SD (opt)
+
+<<<<<<< HEAD
+=======
+Compass: STMicroelectronics LSM303DTR
+>>>>>>> da8347fb723e4b1ba56a0f63c8361f720fc8f037

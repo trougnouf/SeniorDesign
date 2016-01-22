@@ -45,7 +45,7 @@ Microphone: MEMS Microphone - INMP401 ( https://www.sparkfun.com/products/10028 
 	MCU: 1 analog pin (ADC)
 	VDD, GND
 
-Compass: 
+Compass: STMicroelectronics LSM303DTR
 
 
 
