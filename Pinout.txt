@@ -38,4 +38,4 @@ Flash: Micron Technology Inc. N25Q128A13ESE40E ( https://www.digikey.com/product
 
 Microphone: MEMS Microphone - INMP401 ( https://www.sparkfun.com/products/10028 )
 
-Compass: Needs to change, current part is too small to prototype.
+Compass: STMicroelectronics LSM303DTR
