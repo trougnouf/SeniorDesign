@@ -29,6 +29,7 @@ Codec: STA013 ( http://www.pjrc.com/mp3/sta013.html )
 
 Camera: OV9655 Camera board ( http://www.waveshare.com/ov9655-camera-board.htm )
 	See Table 6.1.10.1 in the paper
+	Flex cable. Got https://www.digikey.com/product-detail/en/HFW24S-2STE1LF/609-1125-1-ND/1003108
 
 RAM: Alliance Memory, Inc. AS4C4M16SA-6TIN ( https://www.digikey.com/product-detail/en/AS4C4M16SA-6TIN/1450-1260-ND/5214136 )
 SDCKE0+SDNE0
@@ -46,11 +47,23 @@ Microphone: MEMS Microphone - INMP401 ( https://www.sparkfun.com/products/10028 
 	VDD, GND
 
 Compass: STMicroelectronics LSM303DTR
+	MCU:
+		SPC (SPI serial port clock)
+		SDI (SPI serial data input)
+		SDO (SPI serial data output)
+		INT1 (interrupt, GPIO)
+		INT2 (interrupt, GPIO)
+	
+	CS to 0, see datasheet for capacitors
 
+
+Debug pins need headers. There are 2 UART pins and 3 SWD ("SYS")
 
 
 * GPIO, add at the end
-Input: Camera, speak direction, target1, target2, target3
-BT
+Input: 5+ (Camera, speak direction, target1, target2, target3)
+BT: 1
+Compass: 2
 SD (opt)
+
 
