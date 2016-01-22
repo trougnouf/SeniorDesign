@@ -61,8 +61,9 @@ Debug pins need headers. There are 2 UART pins and 3 SWD ("SYS")
 
 
 * GPIO, add at the end
-Input: Camera, speak direction, target1, target2, target3
-BT
+Input: 5+ (Camera, speak direction, target1, target2, target3)
+BT: 1
+Compass: 2
 SD (opt)
 
 

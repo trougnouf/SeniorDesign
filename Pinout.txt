@@ -4,6 +4,7 @@ MCU: STM32F746ZGT6 ( http://www.st.com/web/catalog/mmc/FM141/SC1169/SS1858/LN190
 
 Laser: lightware SF10/A ( http://www.lightware.co.za/shop/en/drone-altimeters/33-sf10a.html )
 	MCU: UART (2pins) or i2c (fuck that), 5V power
+	Default settings: b=19200
 	
 GPS: LS20031 ( https://www.sparkfun.com/products/8975 )
 	MCU: UART (2 pins)

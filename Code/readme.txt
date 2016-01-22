@@ -8,8 +8,11 @@ HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
   
   
 UART transmission:
-char* msg6 = "Hello world6\n\r";
-HAL_UART_Transmit(&huart6, (uint8_t*)msg6, strlen(msg6), 0xFFFF);
+Discovery board: use PB7 and PA9 with USART1
+Nucleo: use PA2 and PA3 (?)
+
+char* msg = "Hello world\n\r";
+HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg1), 0xFFFF);
 
 
 
