@@ -1,32 +1,53 @@
-Laser: UART (2pins) or i2c (fuck that), 5V power
+MCU: STM32F746ZGT6 ( http://www.st.com/web/catalog/mmc/FM141/SC1169/SS1858/LN1902/PF260873 )
+	Programming headers: See Table 8.1.1.1 in the paper
+	Also needs one UART (two pin headers) for debugging
+
+Laser: lightware SF10/A ( http://www.lightware.co.za/shop/en/drone-altimeters/33-sf10a.html )
+	MCU: UART (2pins) or i2c (fuck that), 5V power
 	
-
-GPS: UART (2 pins)
+GPS: LS20031 ( https://www.sparkfun.com/products/8975 )
+	MCU: UART (2 pins)
 	
-
-Bluetooth:
-MCU: UART_RTS, UART_CTS, UART_TX, UART_RX, 1GPIO
-mic: 3
-misc: 2 LEDs
-codec: SPI (4 pins) or PCM (4 pins)
-
-Codec:
+Bluetooth: RN-52 ( https://www.sparkfun.com/products/11678 )
+	MCU: UART_RTS, UART_CTS, UART_TX, UART_RX,
+*		1GPIO
+	mic: 3
+	misc: 2 LEDs
+	codec: SPI (4 pins) or PCM (4 pins), probably PCM
+	
+Codec: STA013 ( http://www.pjrc.com/mp3/sta013.html )
 	MCU:
 		SDI	Serial Data Input
 		SCKR	Receiver Serial Clock
 		BIT_EN	GPIO: low=ignore incoming data
+		I2C (2pins?)
 	Bluetooth:
 		SDO	PCM Serial Data Output
 		SCKT	PCM Serial Clock Output
 		LRCLK	Left/Right Channel Selection Clock
-	Clock: 10, 14.31818, or 14.7456 MHz
+	Clock: 10, 14.31818, or 14.7456 MHz, using 14.7456 MHz
 
-Camera
+Camera: OV9655 Camera board ( http://www.waveshare.com/ov9655-camera-board.htm )
+	See Table 6.1.10.1 in the paper
 
-RAM
+RAM: Alliance Memory, Inc. AS4C4M16SA-6TIN ( https://www.digikey.com/product-detail/en/AS4C4M16SA-6TIN/1450-1260-ND/5214136 )
+SDCKE0+SDNE0
+4 banks, 12 bits address, 16 bits data, 16-bit byte enable
 
-SD card
+SD card: Molex 503398-1892 ( https://www.digikey.com/product-detail/en/5033981892/WM11190CT-ND/5230912 )
+	See Table 6.1.11.1 in the paper
+	SD 4bits wide bus
 
-Flash
+Flash: Micron Technology Inc. N25Q128A13ESE40E ( https://www.digikey.com/product-detail/en/N25Q128A13ESE40E/557-1562-ND/3874288 )
+Bank1 with Quad SPI Lines
+
+Microphone: MEMS Microphone - INMP401 ( https://www.sparkfun.com/products/10028 )
+
+Compass: 
 
 
+
+* GPIO, add at the end
+Input: Camera, speak direction, target1, target2, target3
+BT
+SD (opt)

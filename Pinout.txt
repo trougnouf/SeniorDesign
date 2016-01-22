@@ -9,7 +9,8 @@ GPS: LS20031 ( https://www.sparkfun.com/products/8975 )
 	MCU: UART (2 pins)
 	
 Bluetooth: RN-52 ( https://www.sparkfun.com/products/11678 )
-	MCU: UART_RTS, UART_CTS, UART_TX, UART_RX, 1GPIO
+	MCU: UART_RTS, UART_CTS, UART_TX, UART_RX,
+*		1GPIO
 	mic: 3
 	misc: 2 LEDs
 	codec: SPI (4 pins) or PCM (4 pins), probably PCM
@@ -30,12 +31,26 @@ Camera: OV9655 Camera board ( http://www.waveshare.com/ov9655-camera-board.htm )
 	See Table 6.1.10.1 in the paper
 
 RAM: Alliance Memory, Inc. AS4C4M16SA-6TIN ( https://www.digikey.com/product-detail/en/AS4C4M16SA-6TIN/1450-1260-ND/5214136 )
+SDCKE0+SDNE0
+4 banks, 12 bits address, 16 bits data, 16-bit byte enable
 
 SD card: Molex 503398-1892 ( https://www.digikey.com/product-detail/en/5033981892/WM11190CT-ND/5230912 )
 	See Table 6.1.11.1 in the paper
+	SD 4bits wide bus
 
 Flash: Micron Technology Inc. N25Q128A13ESE40E ( https://www.digikey.com/product-detail/en/N25Q128A13ESE40E/557-1562-ND/3874288 )
+Bank1 with Quad SPI Lines
 
 Microphone: MEMS Microphone - INMP401 ( https://www.sparkfun.com/products/10028 )
+	MCU: 1 analog pin (ADC)
+	VDD, GND
 
-Compass: Needs to change, current part is too small to prototype.
+Compass: 
+
+
+
+* GPIO, add at the end
+Input: Camera, speak direction, target1, target2, target3
+BT
+SD (opt)
+
