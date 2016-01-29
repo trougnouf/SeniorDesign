@@ -14,10 +14,29 @@ Nucleo: use PA2 and PA3 (?)
 char* msg = "Hello world\n\r";
 HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg1), 0xFFFF);
 
+or create a function such as:
+void printUART(char * msg)
+{
+	HAL_UART_Transmit(&huart6, (uint8_t*)msg, strlen(msg), 0xFFFF);
+}
+
 
 
 
 FreeRTOS:
+
+change stm32f7xx_it.c to:
+void SysTick_Handler(void)
+{
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+  osSystickHandler();
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
+}
 
 Create a thread: put the following after preprocessor:
 osThreadId tNameThreadHandle;

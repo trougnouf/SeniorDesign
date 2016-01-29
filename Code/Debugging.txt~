@@ -1,1 +1,2 @@
 hsd1.Init.BusWide = SDMMC_BUS_WIDE_4B;
+was set to SDMMC_BUS_WIDE_1B, crashing everything.

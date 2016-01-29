@@ -1,2 +1,15 @@
 hsd1.Init.BusWide = SDMMC_BUS_WIDE_4B;
 was set to SDMMC_BUS_WIDE_1B, crashing everything.
+
+in stm32f7xx_it.c: 
+void SysTick_Handler(void)
+{
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+  osSystickHandler();
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
+}
