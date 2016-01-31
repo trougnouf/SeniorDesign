@@ -28,3 +28,6 @@ static void CPU_CACHE_Enable(void)
 }
 
 osThreadDef([...]8*configMINIMAL_STACK_SIZE);
+
+***** Eclipse *****
+Can't find the compiler: project properties > MCU Settings > Path > ${openstm32_compiler_path} -> /usr/bin

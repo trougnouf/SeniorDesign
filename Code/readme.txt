@@ -9,7 +9,9 @@ HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
   
 UART transmission:
 Discovery board: use PB7 and PA9 with USART1
-Nucleo: use PA2 and PA3 (?)
+Nucleo: use PA2 and PA3
+
+Nucleo has USART1 on PA9 and PA10
 
 char* msg = "Hello world\n\r";
 HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg1), 0xFFFF);
