@@ -1,5 +1,4 @@
-hsd1.Init.BusWide = SDMMC_BUS_WIDE_4B;
-was set to SDMMC_BUS_WIDE_1B, crashing everything.
+***** SD card + RTOS: *****
 
 in stm32f7xx_it.c: 
 void SysTick_Handler(void)
@@ -7,9 +6,25 @@ void SysTick_Handler(void)
   /* USER CODE BEGIN SysTick_IRQn 0 */
 
   /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
+  
   osSystickHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
+	HAL_IncTick();
   /* USER CODE END SysTick_IRQn 1 */
 }
+
+***** debugging *****
+if compiler optimizes, declare variables as volatile
+
+***** FatFS *****
+right after main:
+static void CPU_CACHE_Enable(void)
+{
+  /* Enable I-Cache */
+  SCB_EnableICache();
+
+  /* Enable D-Cache */
+  SCB_EnableDCache();
+}
+
+osThreadDef([...]8*configMINIMAL_STACK_SIZE);

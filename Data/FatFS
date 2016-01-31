@@ -1,0 +1,54 @@
+SDFatStatus = f_open(&hello, "hello.txt", FA_READ);
+SDFatStatus = FR_DISK_ERR
+
+2478 hal_s
+
+in ff.c:
+	if (fmt == 3) return FR_DISK_ERR;		/* An error occured in the disk I/O layer */
+
+bsp_driver_sd.c
+    if (HAL_SD_WideBusOperation_Config(&hsd1, SDMMC_BUS_WIDE_4B) != SD_OK)
+f6
+    return MSD_ERROR;
+    
+    ff line810
+    	if (sector != fs->winsect) {	/* Window offset changed? */
+#if !_FS_READONLY
+		res = sync_window(fs);		/* Write-back changes */
+#endif
+		if (res == FR_OK) {			/* Fill sector window with new data */
+			if (disk_read(fs->drv, fs->win.d8, sector, 1) != RES_OK) {
+				sector = 0xFFFFFFFF;	/* Invalidate window if data is not reliable */
+				res = FR_DISK_ERR;
+			}
+			fs->winsect = sector;
+		}
+	}
+	return res;
+
+--------
+old
+
+
+SDPath:
+|:/ (after LinkDriver)
+SD_Driver:
+{disk_initialize = 0x800340d <SD_initialize>, disk_status = 0x800342d <SD_status>, disk_read = 0x800344d <SD_read>, disk_write = 0x800346d <SD_write>, disk_ioctl = 0x800348d <SD_ioctl>}
+SDFatFs:
+{win = {d32 = {0 <repeats 128 times>}, d8 = '\000' <repeats 511 times>}, fs_type = 0 '\000', drv = 0 '\000', csize = 0 '\000', n_fats = 0 '\000', wflag = 0 '\000', fsi_flag = 0 '\000', id = 0, n_rootdir = 0, sobj = 0x0, last_clust = 0, free_clust = 0, n_fatent = 0, fsize = 0, volbase = 0, fatbase = 0, dirbase = 0, database = 0, winsect = 0}
+
+FR_INVALID_DRIVE
+
+----
+example:
+SD_Driver
+{disk_initialize = 0x8004381 <SD_initialize>, disk_status = 0x80043a1 <SD_status>, disk_read = 0x80043c1 <SD_read>, disk_write = 0x80043e1 <SD_write>, disk_ioctl = 0x8004401 <SD_ioctl>}
+
+SDPath:
+0:/ (after LinkDriver)
+
+SDFatFs:
+{win = {d32 = {0 <repeats 128 times>}, d8 = '\000' <repeats 511 times>}, fs_type = 0 '\000', drv = 0 '\000', csize = 0 '\000', n_fats = 0 '\000', wflag = 0 '\000', fsi_flag = 0 '\000', id = 0, n_rootdir = 0, sobj = 0x0, last_clust = 0, free_clust = 0, n_fatent = 0, fsize = 0, volbase = 0, fatbase = 0, dirbase = 0, database = 0, winsect = 0}
+{win = {d32 = {0 <repeats 128 times>}, d8 = '\000' <repeats 511 times>}, fs_type = 0 '\000', drv = 0 '\000', csize = 0 '\000', n_fats = 0 '\000', wflag = 0 '\000', fsi_flag = 0 '\000', id = 0, n_rootdir = 0, sobj = 0x200016e0 <ucHeap+4824>, last_clust = 0, free_clust = 0, n_fatent = 0, fsize = 0, volbase = 0, fatbase = 0, dirbase = 0, database = 0, winsect = 0} (after f_mount)
+
+disk.nbr = '\000'

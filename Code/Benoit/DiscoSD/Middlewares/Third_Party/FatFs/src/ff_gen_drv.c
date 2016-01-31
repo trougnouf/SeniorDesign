@@ -52,7 +52,7 @@ uint8_t FATFS_LinkDriverEx(Diskio_drvTypeDef *drv, char *path, uint8_t lun)
   uint8_t DiskNum = 0;
   
   if(disk.nbr <= _VOLUMES)
-  {
+  {/*
     disk.is_initialized[disk.nbr] = 0;
     disk.drv[disk.nbr] = drv;  
     disk.lun[disk.nbr] = lun;  
@@ -62,6 +62,18 @@ uint8_t FATFS_LinkDriverEx(Diskio_drvTypeDef *drv, char *path, uint8_t lun)
     path[2] = '/';
     path[3] = 0;
     ret = 0;
+    */
+	// ugly hardcoding because disk.nbr gets randomly increased to 'L'
+	disk.is_initialized[0] = 0;
+	disk.drv[0] = drv;
+	disk.lun[0] = lun;
+	DiskNum = disk.nbr++;
+	disk.nbr = 1;
+	path[0] = '0';
+	path[1] = ':';
+	path[2] = '/';
+	path[3] = 0;
+	ret = 0;
   }
   
   return ret;

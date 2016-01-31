@@ -34,6 +34,7 @@
 #include "stm32f7xx_hal.h"
 #include "cmsis_os.h"
 #include "fatfs.h"
+#include "globalfunctions.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -44,14 +45,11 @@
 SD_HandleTypeDef hsd1;
 HAL_SD_CardInfoTypedef SDCardInfo1;
 
-UART_HandleTypeDef huart1;
+//UART_HandleTypeDef huart1;
 
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN PV */
-FATFS SDFatFs;  /* File system object for SD card logical drive */
-FIL MyFile;     /* File object */
-char SDPath[4]; /* SD card logical drive path */
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE END PV */
@@ -60,15 +58,13 @@ char SDPath[4]; /* SD card logical drive path */
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SDMMC1_SD_Init(void);
-static void MX_USART1_UART_Init(void);
+//static void MX_USART1_UART_Init(void);
 void StartDefaultTask(void const * argument);
+static void CPU_CACHE_Enable(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-static void StartuSDThread(void const *argument);
-void d7d8();
-static void Error_Handler(void);
-void printUART(char * msg);
+//static void strToUART(char * str);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -77,13 +73,9 @@ void printUART(char * msg);
 
 int main(void)
 {
-
+	CPU_CACHE_Enable();
   /* USER CODE BEGIN 1 */
-	  /* Enable I-Cache */
-	  SCB_EnableICache();
 
-	  /* Enable D-Cache */
-	  SCB_EnableDCache();
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -100,8 +92,7 @@ int main(void)
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
-  //BSP_LED_Init(LED1);
-  HAL_GPIO_WritePin(GPIOI, GPIO_PIN_2, GPIO_PIN_RESET);
+
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -118,12 +109,10 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 8*configMINIMAL_STACK_SIZE);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  osThreadDef(uSDThread, StartuSDThread, osPriorityNormal, 0, 8 * configMINIMAL_STACK_SIZE);
-  osThreadCreate(osThread(uSDThread), NULL);
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
@@ -195,6 +184,15 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 15, 0);
 }
 
+static void CPU_CACHE_Enable(void)
+{
+  /* Enable I-Cache */
+  SCB_EnableICache();
+
+  /* Enable D-Cache */
+  SCB_EnableDCache();
+}
+
 /* SDMMC1 init function */
 void MX_SDMMC1_SD_Init(void)
 {
@@ -212,190 +210,28 @@ void MX_SDMMC1_SD_Init(void)
 
 }
 
-/* USART1 init function */
-void MX_USART1_UART_Init(void)
-{
-
-  huart1.Instance = USART1;
-  huart1.Init.BaudRate = 9600;
-  huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_1;
-  huart1.Init.Parity = UART_PARITY_NONE;
-  huart1.Init.Mode = UART_MODE_TX_RX;
-  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart1.Init.OneBitSampling = UART_ONEBIT_SAMPLING_DISABLED;
-  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  HAL_UART_Init(&huart1);
-
-}
-
-/** Configure pins as 
-        * Analog 
-        * Input 
-        * Output
-        * EVENT_OUT
-        * EXTI
+/** Pinout Configuration
 */
 void MX_GPIO_Init(void)
 {
 
-  GPIO_InitTypeDef GPIO_InitStruct;
-
   /* GPIO Ports Clock Enable */
   __GPIOC_CLK_ENABLE();
   __GPIOB_CLK_ENABLE();
-  __GPIOI_CLK_ENABLE();
   __GPIOD_CLK_ENABLE();
   __GPIOA_CLK_ENABLE();
+  __GPIOI_CLK_ENABLE();
 
+  GPIO_InitTypeDef GPIO_InitStruct;
   /*Configure GPIO pins : PI3 PI2 */
   GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_2;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
-
 }
 
 /* USER CODE BEGIN 4 */
-static void StartuSDThread(void const *argument)
-{
-  FRESULT res;                                          /* FatFs function common result code */
-  uint32_t byteswritten, bytesread;                     /* File write/read counts */
-  uint8_t wtext[] = "This is STM32 working with FatFs :)"; /* File write buffer */
-  uint8_t rtext[100];                                   /* File read buffer */
-
-  /*##-1- Link the micro SD disk I/O driver ##################################*/
-  printUART("/*##-1- Link the micro SD disk I/O driver ##################################*/\n\r");
-  if(FATFS_LinkDriver(&SD_Driver, SDPath) == 0)
-  {
-    /*##-2- Register the file system object to the FatFs module ##############*/
-    printUART("/*##-2- Register the file system object to the FatFs module ##############*/\n\r");
-	  if(f_mount(&SDFatFs, (TCHAR const*)SDPath, 0) != FR_OK)
-    {
-		  printUART("/* FatFs Initialization Error */\n\r");
-      /* FatFs Initialization Error */
-      Error_Handler();
-    }
-    else
-    {
-    	printUART("*##-3- Create a FAT file system (format) on the logical drive #########*/\n\r/* WARNING: Formatting the uSD card will delete all content on the device \n\r");
-      /*##-3- Create a FAT file system (format) on the logical drive #########*/
-      /* WARNING: Formatting the uSD card will delete all content on the device */
-      if(f_mkfs((TCHAR const*)SDPath, 0, 0) != FR_OK)
-      {
-    	  printUART(" /* FatFs Format Error */\n\r");
-        /* FatFs Format Error */
-        Error_Handler();
-      }
-      else
-      {
-    	  printUART("/*##-4- Create and Open a new text file object with write access #####*/\n\r");
-        /*##-4- Create and Open a new text file object with write access #####*/
-        if(f_open(&MyFile, "STM32.TXT", FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
-        {
-        	printUART("/* 'STM32.TXT' file Open for write Error */\n\r");
-          /* 'STM32.TXT' file Open for write Error */
-          Error_Handler();
-        }
-        else
-        {
-        	printUART("/*##-5- Write data to the text file ################################*/\n\r");
-          /*##-5- Write data to the text file ################################*/
-          res = f_write(&MyFile, wtext, sizeof(wtext), (void *)&byteswritten);
-
-          if((byteswritten == 0) || (res != FR_OK))
-          {
-        	  printUART("/* 'STM32.TXT' file Write or EOF Error */\n\r");
-            /* 'STM32.TXT' file Write or EOF Error */
-            Error_Handler();
-          }
-          else
-          {
-        	  printUART("/*##-6- Close the open text file #################################*/\n\r");
-            /*##-6- Close the open text file #################################*/
-            f_close(&MyFile);
-
-            printUART("/*##-7- Open the text file object with read access ###############*/\n\r");
-            /*##-7- Open the text file object with read access ###############*/
-            if(f_open(&MyFile, "STM32.TXT", FA_READ) != FR_OK)
-            {
-            	printUART(" /* 'STM32.TXT' file Open for read Error */\n\r");
-              /* 'STM32.TXT' file Open for read Error */
-              Error_Handler();
-            }
-            else
-            {
-            	printUART("/*##-8- Read data from the text file ###########################*/\n\r");
-              /*##-8- Read data from the text file ###########################*/
-              res = f_read(&MyFile, rtext, sizeof(rtext), (UINT*)&bytesread);
-
-              if((bytesread == 0) || (res != FR_OK))
-              {
-            	  printUART("/* 'STM32.TXT' file Read or EOF Error */\n\r");
-                /* 'STM32.TXT' file Read or EOF Error */
-                Error_Handler();
-              }
-              else
-              {
-            	  printUART(" /*##-9- Close the open text file #############################*/\n\r");
-                /*##-9- Close the open text file #############################*/
-                f_close(&MyFile);
-                printUART("/*##-10- Compare read data with the expected data ############*/\n\r");
-                /*##-10- Compare read data with the expected data ############*/
-                if ((bytesread != byteswritten))
-                {
-                	printUART("/* Read data is different from the expected data */\n\r");
-                  /* Read data is different from the expected data */
-                  Error_Handler();
-                }
-                else
-                {
-                	printUART("/* Success of the demo: no error occurrence */\n\r");
-                  /* Success of the demo: no error occurrence */
-                  //BSP_LED_On(LED1);
-                	d7d8();
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  printUART("/*##-11- Unlink the micro SD disk I/O driver ###############################*/");
-  /*##-11- Unlink the micro SD disk I/O driver ###############################*/
-  FATFS_UnLinkDriver(SDPath);
-
-  /* Infinite Loop */
-  for( ;; )
-  {
-  }
-}
-
-static void Error_Handler(void)
-{
-  /* Turn LED1 on */
-  //BSP_LED_On(LED1);
-  while(1)
-  {
-    //BSP_LED_Toggle(LED1);
-	  HAL_GPIO_WritePin(GPIOI, GPIO_PIN_3, GPIO_PIN_SET);
-    HAL_Delay(200);
-    HAL_GPIO_WritePin(GPIOI, GPIO_PIN_2, GPIO_PIN_RESET);
-    HAL_Delay(200);
-  }
-}
-void printUART(char * msg)
-{
-	HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 0xFFFF);
-}
-
-void d7d8()
-{
-	HAL_GPIO_WritePin(GPIOI, GPIO_PIN_3, GPIO_PIN_SET);
-}
 
 /* USER CODE END 4 */
 
@@ -403,13 +239,15 @@ void d7d8()
 void StartDefaultTask(void const * argument)
 {
   /* init code for FATFS */
-  //MX_FATFS_Init();
+  MX_FATFS_Init();
 
   /* USER CODE BEGIN 5 */
+  HAL_GPIO_WritePin(GPIOI, GPIO_PIN_2, GPIO_PIN_RESET);
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  HAL_GPIO_TogglePin(GPIOI, GPIO_PIN_3);
+    osDelay(100);
   }
   /* USER CODE END 5 */ 
 }
@@ -427,7 +265,7 @@ void assert_failed(uint8_t* file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
-    ex: printf("Wrong parameters value: file %s on line %d\r\n\r", file, line) */
+    ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 
 }

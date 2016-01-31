@@ -1,0 +1,15 @@
+Linux:
+
+##openstm32
+# download http://www.openstm32.org/dl160 then as root
+# tar -xf stlink_udev_rule.tar.bz2 -C /etc/udev/rules.d && rm stlink_udev_rule.tar.bz2
+# add http://www.openstm32.org/Eclipse-updates/org.openstm32.system-workbench.site to eclipse
+
+cube:
+http://www.st.com/stm32cube
+unzip .exe archive
+java -cp . com.izforge.izpack.installer.bootstrap.Installer
+
+
+
+Make error 127: replace "${openstm32_compiler_path}" w/ "/usr/bin" in properties/...
