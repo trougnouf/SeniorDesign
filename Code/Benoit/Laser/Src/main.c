@@ -286,7 +286,7 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-	uint8_t in[7];
+	uint8_t in[6];
 	in[0] = '0';
 	uint8_t * nl = "\n\r";
 	uint8_t inSize;
@@ -302,17 +302,14 @@ void StartDefaultTask(void const * argument)
   {
 	  if(HAL_UART_Transmit(&huart1, &in[0], 1, 1000) == HAL_OK)
 	  {
+
 	  	for (inSize = 0; inSize < 7; inSize++)
 	  	{
-	  		HAL_UART_Receive(&huart1, &in[inSize], 1, 0x500);
-	  		if(in[inSize] == '\n')
-	  		{
-	  			HAL_UART_Receive(&huart1, &in[inSize], 1, 0x500);
-	  			break;
-	  		}
+	  		HAL_UART_Receive(&huart1, &in[inSize], 1, 0xFFFF);
+	  		if(in[inSize] == '\n')	break;
 	  	}
-	  	HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x1000);
-	  	strToUART(nl);
+	  	HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x1000);	// send result to PC (opt)
+	  	strToUART(nl);	// makes debugging prettier
 	  	distance = atof(in);
 	  	//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_1);	// no heartbeat on the same pin as laserOut_*
 	  	//osDelay(100);
@@ -322,7 +319,7 @@ void StartDefaultTask(void const * argument)
 	  else if(distance < 0.6096)	laserOut_2ft();
 	  else if(distance < 0.9144)	laserOut_3ft();
 	  else							laserOut_safe();
-
+	  osDelay(150);	// delay before checking again to save precious battery life
 
   }
   /* USER CODE END 5 */ 
