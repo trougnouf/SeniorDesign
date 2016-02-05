@@ -35,7 +35,7 @@
 #include "cmsis_os.h"
 
 /* USER CODE BEGIN Includes */
-
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -63,12 +63,39 @@ void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN 0 */
 
-/* USER CODE END 0 */
-
 static void strToUART(char * msg)
 {
 	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
 }
+
+static void laserOut_1ft()
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);	//A4
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);	//A2
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);	//A0
+}
+static void	laserOut_2ft()
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);	//A4
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);	//A2
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);	//A0
+}
+static void	laserOut_3ft()
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);	//A4
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);	//A2
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);	//A0
+}
+static void laserOut_safe()
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);	//A4
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);	//A2
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);	//A0
+}
+
+/* USER CODE END 0 */
+
+
 
 int main(void)
 {
@@ -259,57 +286,44 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-	uint8_t * req = "r";
 	uint8_t in[7];
+	in[0] = '0';
 	uint8_t * nl = "\n\r";
 	uint8_t inSize;
 	HAL_StatusTypeDef status;
+	volatile double distance = 0;
 
-	//char * i = "moo\n\r";
 
-	//laserIn = {'0','1','2','3'};
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
   /* Infinite loop */
-	//HAL_UART_Transmit(&huart1, (uint8_t *)i, 1, 1000);
   for(;;)
   {
-	  status = HAL_UART_Transmit(&huart1, (uint8_t *)req, 1, 1000);	// request data from laser
-	  if(status == HAL_OK)
+	  if(HAL_UART_Transmit(&huart1, &in[0], 1, 1000) == HAL_OK)
 	  {
-	  	for (inSize = 0; status == HAL_OK; inSize++)
+	  	for (inSize = 0; inSize < 7; inSize++)
 	  	{
-	  		status = HAL_UART_Receive(&huart1, &in[inSize], 1, 0x500);
+	  		HAL_UART_Receive(&huart1, &in[inSize], 1, 0x500);
+	  		if(in[inSize] == '\n')
+	  		{
+	  			HAL_UART_Receive(&huart1, &in[inSize], 1, 0x500);
+	  			break;
+	  		}
 	  	}
-	  	if(status != HAL_OK)	inSize--;
 	  	HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x1000);
 	  	strToUART(nl);
+	  	distance = atof(in);
+	  	//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_1);	// no heartbeat on the same pin as laserOut_*
 	  	//osDelay(100);
 	  }
-	  /*
-	  char laserIn[20];
-	  //*laserIn = NULL;
-	  if(HAL_UART_Transmit(&huart1, (uint8_t *)i, 1, 1000) == HAL_OK)
-	  {
-		  HAL_StatusTypeDef status = HAL_UART_Receive(&huart1, (uint8_t *)laserIn, 3, 0xFFFF);
-		  if(status == HAL_OK)
-		  {
-			  // send back to pc.
-			  strToUART(laserIn);
-		  }
-		  else strToUART("Did not receive.\n\r");
-	  }
-	  else strToUART("Did not transmit.\n\r");
-	  //HAL_UART_Transmit(&huart2, (uint8_t *)i, 2, 1000);
-	  //osDelay(10);
-	  //HAL_UART_Receive(&huart1, (uint8_t *)laserIn, 8, 1000);
-	  //osDelay(100);
-	  //HAL_UART_Transmit(&huart2, (uint8_t *)laserIn, strlen(laserIn), 1000);
-	  //osDelay(1000);
-	  //HAL_UART_Transmit(&huart2, nl, strlen(nl), 1000);
-	  //HAL_UART_Transmit(&huart2, laserIn, strlen(laserIn), 1000);
-	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_1);
-	  osDelay(1000);
-	  */
+
+	  if(distance < 0.3048)			laserOut_1ft();
+	  else if(distance < 0.6096)	laserOut_2ft();
+	  else if(distance < 0.9144)	laserOut_3ft();
+	  else							laserOut_safe();
+
+
   }
   /* USER CODE END 5 */ 
 }
