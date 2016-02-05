@@ -65,6 +65,11 @@ void StartDefaultTask(void const * argument);
 
 /* USER CODE END 0 */
 
+static void strToUART(char * msg)
+{
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+}
+
 int main(void)
 {
 
@@ -254,8 +259,22 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-	char * i = "i";
-	char * nl = "\n\r";
+	uint8_t * req = "r";
+	uint8_t in[7];
+	uint8_t * nl = "\n\r";
+	uint8_t inSize;
+	HAL_StatusTypeDef status;
+	status = HAL_UART_Transmit(&huart1, (uint8_t *)req, 1, 1000);	// request data from laser
+	if(status == HAL_OK)
+	{
+		for (inSize = 0; status == HAL_OK; inSize++)
+		{
+			status = HAL_UART_Receive(&huart1, &in[inSize], 1, 0x1000);
+		}
+		if(status != HAL_OK)	inSize--;
+		HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x1000);
+		strToUART(nl);
+	}
 	//char * i = "moo\n\r";
 
 	//laserIn = {'0','1','2','3'};
@@ -263,20 +282,31 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
 	//HAL_UART_Transmit(&huart1, (uint8_t *)i, 1, 1000);
   for(;;)
-  {
+  {/*
 	  char laserIn[20];
 	  //*laserIn = NULL;
-	  HAL_UART_Transmit(&huart1, (uint8_t *)i, 2, 1000);
+	  if(HAL_UART_Transmit(&huart1, (uint8_t *)i, 1, 1000) == HAL_OK)
+	  {
+		  HAL_StatusTypeDef status = HAL_UART_Receive(&huart1, (uint8_t *)laserIn, 3, 0xFFFF);
+		  if(status == HAL_OK)
+		  {
+			  // send back to pc.
+			  strToUART(laserIn);
+		  }
+		  else strToUART("Did not receive.\n\r");
+	  }
+	  else strToUART("Did not transmit.\n\r");
 	  //HAL_UART_Transmit(&huart2, (uint8_t *)i, 2, 1000);
 	  //osDelay(10);
-	  HAL_UART_Receive(&huart1, (uint8_t *)laserIn, 8, 1000);
+	  //HAL_UART_Receive(&huart1, (uint8_t *)laserIn, 8, 1000);
 	  //osDelay(100);
-	  HAL_UART_Transmit(&huart2, (uint8_t *)laserIn, strlen(laserIn), 1000);
+	  //HAL_UART_Transmit(&huart2, (uint8_t *)laserIn, strlen(laserIn), 1000);
 	  //osDelay(1000);
-	  HAL_UART_Transmit(&huart2, nl, strlen(nl), 1000);
-	  HAL_UART_Transmit(&huart2, laserIn, strlen(laserIn), 1000);
+	  //HAL_UART_Transmit(&huart2, nl, strlen(nl), 1000);
+	  //HAL_UART_Transmit(&huart2, laserIn, strlen(laserIn), 1000);
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_1);
 	  osDelay(1000);
+	  */
   }
   /* USER CODE END 5 */ 
 }
