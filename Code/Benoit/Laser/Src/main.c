@@ -264,17 +264,7 @@ void StartDefaultTask(void const * argument)
 	uint8_t * nl = "\n\r";
 	uint8_t inSize;
 	HAL_StatusTypeDef status;
-	status = HAL_UART_Transmit(&huart1, (uint8_t *)req, 1, 1000);	// request data from laser
-	if(status == HAL_OK)
-	{
-		for (inSize = 0; status == HAL_OK; inSize++)
-		{
-			status = HAL_UART_Receive(&huart1, &in[inSize], 1, 0x1000);
-		}
-		if(status != HAL_OK)	inSize--;
-		HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x1000);
-		strToUART(nl);
-	}
+
 	//char * i = "moo\n\r";
 
 	//laserIn = {'0','1','2','3'};
@@ -282,7 +272,20 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
 	//HAL_UART_Transmit(&huart1, (uint8_t *)i, 1, 1000);
   for(;;)
-  {/*
+  {
+	  status = HAL_UART_Transmit(&huart1, (uint8_t *)req, 1, 1000);	// request data from laser
+	  if(status == HAL_OK)
+	  {
+	  	for (inSize = 0; status == HAL_OK; inSize++)
+	  	{
+	  		status = HAL_UART_Receive(&huart1, &in[inSize], 1, 0x500);
+	  	}
+	  	if(status != HAL_OK)	inSize--;
+	  	HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x1000);
+	  	strToUART(nl);
+	  	//osDelay(100);
+	  }
+	  /*
 	  char laserIn[20];
 	  //*laserIn = NULL;
 	  if(HAL_UART_Transmit(&huart1, (uint8_t *)i, 1, 1000) == HAL_OK)
