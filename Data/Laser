@@ -1,0 +1,80 @@
+Laser: lightware SF10/A ( http://www.lightware.co.za/shop/en/drone-altimeters/33-sf10a.html )
+	MCU: UART (2pins) or i2c (fuck that), 5V power
+	Default settings: b=19200
+	
+yellow	TXD
+orange	RXD
+black	GND
+red	4.5-5.5V
+
+[trougnouf@pc ~]$ picocom /dev/ttyUSB0 -b 19200
+picocom v2.1
+
+port is        : /dev/ttyUSB0
+flowcontrol    : none
+baudrate is    : 19200
+parity is      : none
+databits are   : 8
+stopbits are   : 1
+escape is      : C-a
+local echo is  : no
+noinit is      : no
+noreset is     : no
+nolock is      : no
+send_cmd is    : sz -vv
+receive_cmd is : rz -vv -E
+imap is        : 
+omap is        : 
+emap is        : crcrlf,delbs,
+
+Type [C-a] [C-h] to see available commands
+
+Terminal ready
+0.09
+0.03
+0.06
+
+Thanks for using picocom
+[trougnouf@pc ~]$ picocom /dev/ttyUSB0 -b 19200 -d 7
+picocom v2.1
+
+port is        : /dev/ttyUSB0
+flowcontrol    : none
+baudrate is    : 19200
+parity is      : none
+databits are   : 7
+stopbits are   : 1
+escape is      : C-a
+local echo is  : no
+noinit is      : no
+noreset is     : no
+nolock is      : no
+send_cmd is    : sz -vv
+receive_cmd is : rz -vv -E
+imap is        : 
+omap is        : 
+emap is        : crcrlf,delbs,
+
+Type [C-a] [C-h] to see available commands
+
+Terminal ready
+0.05
+0.05
+0.06
+0.05
+0.05
+0.04
+
+Thanks for using picocom
+
+Safety:
+
+https://en.wikipedia.org/wiki/Laser_safety#Class_1M
+Class 1M
+
+LASER RADIATION
+DO NOT VIEW DIRECTLY WITH OPTICAL INSTRUMENTS
+CLASS 1M LASER PRODUCT
+
+A Class 1M laser is safe for all conditions of use except when passed through magnifying optics such as microscopes and telescopes. Class 1M lasers produce large-diameter beams, or beams that are divergent. The MPE for a Class 1M laser cannot normally be exceeded unless focusing or imaging optics are used to narrow the beam. If the beam is refocused, the hazard of Class 1M lasers may be increased and the product class may be changed. A laser can be classified as Class 1M if the power that can pass through the pupil of the naked eye is less than the AEL for Class 1, but the power that can be collected into the eye by typical magnifying optics (as defined in the standard) is higher than the AEL for Class 1 and lower than the AEL for Class 3B.
+
