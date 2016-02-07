@@ -1,36 +1,60 @@
-MCU: STM32F746ZGT6 ( http://www.st.com/web/catalog/mmc/FM141/SC1169/SS1858/LN1902/PF260873 )
-	Programming headers: See Table 8.1.1.1 in the paper
+MCU: 		STM32F746ZGT6
+datasheet:http://www.st.com/web/catalog/mmc/FM141/SC1169/SS1858/LN1902/PF260873
+Notes:	Needs programming headers: See Table 8.1.1.1 in the paper
 	Also needs one UART (two pin headers) for debugging
+	// using the same UART as dev board: PA9 PB7 USART1)
+Pinout:	{PB3, PA14, PA13}debugging, {PB7, PA9}USART1 (all female headers)
 
-Laser: lightware SF10/A ( http://www.lightware.co.za/shop/en/drone-altimeters/33-sf10a.html )
-	MCU: UART (2pins) or i2c (fuck that), 5V power
-	Default settings: b=19200
+Laser:		lightware SF10/A
+Web:	http://www.lightware.co.za/shop/en/drone-altimeters/33-sf10a.html )
+Notes:	MCU: UART (2pins) or i2c (fuck that), 5V power
+	// Default settings: baudrate=19200, 8b
+Pinout:	PA0, PA1 (all female headers)
 	
-GPS: LS20031 ( https://www.sparkfun.com/products/8975 )
-	MCU: UART (2 pins)
+GPS:		Sparksfun LS20031
+Web:	https://www.sparkfun.com/products/8975 )
+Notes:	UART (2 pins)
+Pinout:	PF6 (RX mcu/TX GPS), PF7 (TX MCU/RX GPS)
+
+Codec:		STMicroelectronics STA013
+Web:	http://www.pjrc.com/mp3/sta013.html
+Notes:	
+	MCU:	I2C control
+			SDA
+			SCL
+		MP3 input
+			SDI (data)
+			SCKR (clock)
+			DATA_REQ (ready)			GPIO
+		Reset	RST					GPIO
 	
-Bluetooth: RN-52 ( https://www.sparkfun.com/products/11678 )
+	BT:	SDO (PCM Serial Data Output)
+		SCKT (PCM Serial Clock Output)
+		LRCKT (Left/Right Channel Selection Clock)
+		OCLK
+		
+	Clock:	Using 14.7456 MHz
+Pinout:	PB11 (I2C_SDA), PB10 (I2C_SCL), PC1 (SDI), PB12 (DATA_REQ), PB14 (RST)
+
+Camera:		OV9655 Camera board
+Web:	http://www.waveshare.com/ov9655-camera-board.htm
+Schem:	http://www.waveshare.com/w/upload/6/67/OV9655-Camera-Board-Schematic.pdf
+Notes:	See Table 6.1.10.1 in the paper
+	Connects to a flex cable. Got https://www.digikey.com/product-detail/en/HFW24S-2STE1LF/609-1125-1-ND/1003108
+	or
+	Match the schematic (0.1" headers)
+	
+Pinout:	
+
+Bluetooth: 	Sparksfun RN-52
+Web:	https://www.sparkfun.com/products/11678
+Notes:	Sparksfun sells a RN-52 breakout board, they provide the Eagle files.
 	MCU: UART_RTS, UART_CTS, UART_TX, UART_RX,
 *		1GPIO
 	mic: 3
 	misc: 2 LEDs
 	codec: SPI (4 pins) or PCM (4 pins), probably PCM
 	
-Codec: STA013 ( http://www.pjrc.com/mp3/sta013.html )
-	MCU:
-		SDI	Serial Data Input
-		SCKR	Receiver Serial Clock
-		BIT_EN	GPIO: low=ignore incoming data
-		I2C (2pins?)
-	Bluetooth:
-		SDO	PCM Serial Data Output
-		SCKT	PCM Serial Clock Output
-		LRCLK	Left/Right Channel Selection Clock
-	Clock: 10, 14.31818, or 14.7456 MHz, using 14.7456 MHz
-
-Camera: OV9655 Camera board ( http://www.waveshare.com/ov9655-camera-board.htm )
-	See Table 6.1.10.1 in the paper
-	Flex cable. Got https://www.digikey.com/product-detail/en/HFW24S-2STE1LF/609-1125-1-ND/1003108
 
 RAM: Alliance Memory, Inc. AS4C4M16SA-6TIN ( https://www.digikey.com/product-detail/en/AS4C4M16SA-6TIN/1450-1260-ND/5214136 )
 SDCKE0+SDNE0
