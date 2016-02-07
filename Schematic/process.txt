@@ -1,0 +1,26 @@
+research components
+	charger
+	dc-dc 3.3v
+	dc-dc 5v
+	
+
+Schematic
+		MCU
+	Laser
+	DC-DC
+	battery charger
+	compass
+	bluetooth
+	sd
+	codec
+add	
+	mic
+	battery
+	switches(on-off))
+	buttons (5+)
+	headers (debug, uart, ++)
+	
+make footprints
+
+components to lookup:
+charger, dc-dcx2, battery holder
