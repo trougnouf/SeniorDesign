@@ -1,14 +1,17 @@
 research components
 	charger
 	dc-dc 3.3v
-	dc-dc 5v
+	dc-dc 5v42
 	
 
 Schematic
 		MCU
-	Laser
+		Laser
 	DC-DC
+		3.3V: PAM2301CAAB330DICT-ND  (800mA)
+		5V: needs 125mA:  AAT1217ICA-1.2-T1 (750mA)
 	battery charger
+		 MCP73811T-420I/OT 
 	compass
 	bluetooth
 	sd

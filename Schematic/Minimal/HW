@@ -1,0 +1,46 @@
+#MCU		STMicroelectronics STM32L476RET6
+V:	3.3V
+
+#Laser		Lightware SF10/A
+V:	5V
+I:	125mA
+
+#DC-DC 3.3V	PAM2301CAAB330DICT-ND
+I:	800mA
+src:	http://www.digikey.com/product-detail/en/PAM2301CAAB330/PAM2301CAAB330DICT-ND/5267109
+$:	$0.60
+P:	TSOT-25 
+dat:	http://www.diodes.com/_files/datasheets/PAM2301.pdf
+
+#DC-DC 5V	AAT1217ICA-1.2-T1
+I:	750mA
+src:	http://www.digikey.com/product-detail/en/AAT1217ICA-1.2-T1/863-1495-1-ND/4246169
+$:	$0.44
+P:	TSOT-23-6 
+dat:	http://www.skyworksinc.com/uploads/documents/AAT1217_202050B.pdf
+
+#Charger	MCP73811T-420I/OT
+I:	450mA
+src:	http://ww1.microchip.com/downloads/en/DeviceDoc/22036b.pdf
+$:	$0.51
+P:	SOT-23-5 		
+		 
+#Compass	STMicroelectronics LSM303DTR
+dat:	http://www.st.com/web/en/resource/technical/document/datasheet/DM00057547.pdf
+P:	LGA-16
+
+	bluetooth
+	sd
+	codec
+add	
+	mic
+	battery
+	switches(on-off))
+	buttons (5+)
+	headers (debug, uart, ++)
+	USB
+	
+make footprints
+
+components to lookup:
+charger, dc-dcx2, battery holder

@@ -1,0 +1,15 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP AAT1217
+D Skyworks AAT1217
+K DC DC Switching regulator
+F http://www.skyworksinc.com/uploads/documents/AAT1217_202050B.pdf
+$ENDCMP
+#
+$CMP STM32L476R
+D STMicroelectronics STM32L476RETx
+K stm32 stm32l4 stmicroelectronics microcontroller mcu
+F http://www.st.com/web/jp/resource/technical/document/datasheet/DM00108832.pdf
+$ENDCMP
+#
+#End Doc Library
