@@ -300,12 +300,6 @@ K ARM 32bit CortexM4F M4F STM Microcontroller FPU
 F http://www.st.com/internet/mcu/product/252140.jsp
 $ENDCMP
 #
-$CMP STM32F411xC/xE
-D STMicroelectronics STM32F411xC/xE MCU
-K MCU, Microcontroller, STMicroelectronics
-F http://www.st.com/web/en/resource/technical/document/datasheet/DM00115249.pdf
-$ENDCMP
-#
 $CMP STM32F415VG
 D STM32F407VG, 32-bit ARM Cortex-M4F microcontroller, 168 MHz, 1024 kB Flash, 192 kB SRAM, FPU, Crypto
 K ARM 32bit CortexM4F M4F STM Microcontroller FPU
@@ -322,6 +316,12 @@ $CMP STM32F417VG
 D STM32F407VG, 32-bit ARM Cortex-M4F microcontroller, 168 MHz, 1024 kB Flash, 192 kB SRAM, FPU, Crypto, Ethernet, DCMI
 K ARM 32bit CortexM4F M4F STM Microcontroller FPU
 F http://www.st.com/internet/mcu/product/252139.jsp
+$ENDCMP
+#
+$CMP STM32L476R
+D STMicroelectronics STM32L476RETx
+K stm32 stm32l4 stmicroelectronics microcontroller mcu
+F http://www.st.com/web/jp/resource/technical/document/datasheet/DM00108832.pdf
 $ENDCMP
 #
 #End Doc Library

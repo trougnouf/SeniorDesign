@@ -318,4 +318,10 @@ K ARM 32bit CortexM4F M4F STM Microcontroller FPU
 F http://www.st.com/internet/mcu/product/252139.jsp
 $ENDCMP
 #
+$CMP STM32L476R
+D STMicroelectronics STM32L476RETx
+K stm32 stm32l4 stmicroelectronics microcontroller mcu
+F http://www.st.com/web/jp/resource/technical/document/datasheet/DM00108832.pdf
+$ENDCMP
+#
 #End Doc Library
