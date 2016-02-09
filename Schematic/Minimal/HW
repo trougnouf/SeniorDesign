@@ -29,11 +29,22 @@ P:	SOT-23-5
 dat:	http://www.st.com/web/en/resource/technical/document/datasheet/DM00057547.pdf
 P:	LGA-16
 
-	bluetooth
-	sd
-	codec
+#Bluetooth	Microchip RN52
+dat:	http://ww1.microchip.com/downloads/en/DeviceDoc/70005120A.pdf
+P:	custom
+
+#SD		Molex 5033981892
+
+#Codec		STMicroelectronics STA013
+Web:	http://www.pjrc.com/mp3/sta013.html
+dat:	http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00001694.pdf
+
+#Microphone	INMP401
+web:	https://www.sparkfun.com/products/10028
+	https://www.sparkfun.com/products/9868
+dat:	http://www.analog.com/media/en/technical-documentation/obsolete-data-sheets/ADMP401.pdf
+
 add	
-	mic
 	battery
 	switches(on-off))
 	buttons (5+)
