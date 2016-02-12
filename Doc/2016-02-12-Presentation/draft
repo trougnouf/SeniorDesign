@@ -1,0 +1,36 @@
+CPU vs MCU
+
+	# of devices:
+	Laser, bluetooth
+	mic/Voice recognition
+	Audio decoder
+	camera, GPS
+	flash, ram, sd
+	
+	SW libraries:
+	OpenCV vs scratch, ffmpeg vs HW, Fully-featured navigation vs programmed routes, OSS voice recognition vs nearly impossible
+	
+	Powerful microcontroller: easy/flexible hw, more complicated sw. More learning opportunities, less likely to implement fancy features
+
+Choice of MCU
+	MSP430/Arduino: 16MHz is not powerful enough
+	MSP432: Cortex-based, 48MHz-max
+	Cortex-M7:
+	Freescale Kinetic KV5x: $159 dev board, $199 programmer
+	
+	
+	STMicroelectronics STM32F7, STM32L4 backup
+	
+	One of only two Cortex-M7 available at the time
+	Flexibility: design is easily adaptable to any other ARM STM32 MCU
+	STLinkV2
+		Cheap programmer ($20), $10-47 dev board
+		only 3 wires
+	Cross-platform dev environment
+		Eclipse/Java based
+
+Dev environment
+	Mostly free and open-source software:
+	Eclipse OpenSTM32 plugin: GCC/GDB/OpenOCD
+	STM32CubeMX
+	FreeRTOS

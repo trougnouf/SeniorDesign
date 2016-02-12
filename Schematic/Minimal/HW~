@@ -44,11 +44,6 @@ web:	https://www.sparkfun.com/products/10028
 	https://www.sparkfun.com/products/9868
 dat:	http://www.analog.com/media/en/technical-documentation/obsolete-data-sheets/ADMP401.pdf
 
-#GPS		LS20031
-web:	https://www.sparkfun.com/products/8975
-dat:	https://cdn.sparkfun.com/datasheets/GPS/LS20030~3_datasheet_v1.3.pdf
-$:	$59.95
-
 add	
 	battery
 	switches(on-off))
