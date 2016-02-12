@@ -34,3 +34,14 @@ Dev environment
 	Eclipse OpenSTM32 plugin: GCC/GDB/OpenOCD
 	STM32CubeMX
 	FreeRTOS
+	
+	
+No camera	->	no Cortex-M7, external RAM, external Flash
+No solar panel
+
+USB 5V -> Battery charger -> Battery -> {5V -> laser, 3.3V -> MCU, GPS, compass, Bluetooth}
+
+Charger: Microchip MCP73811: SOT-23-5 $.51
+3.3V: Diodes Inc. PAM2301: 23-5-T: $0.60
+5V: Skyworks Inc. AAT1217: TSOT-23-6: $0.44
+
