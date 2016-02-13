@@ -291,36 +291,37 @@ void StartDefaultTask(void const * argument)
 	uint8_t * nl = "\n\r";
 	uint8_t inSize;
 	HAL_StatusTypeDef status;
-	volatile double distance = 0;
+	double distance = 0; //(debug) was volatile
 
-
+	// LEDs
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
+
   /* Infinite loop */
-  for(;;)
-  {
-	  if(HAL_UART_Transmit(&huart1, &in[0], 1, 1000) == HAL_OK)
-	  {
-
-	  	for (inSize = 0; inSize < 7; inSize++)
-	  	{
-	  		HAL_UART_Receive(&huart1, &in[inSize], 1, 0xFFFF);
-	  		if(in[inSize] == '\n')	break;
-	  	}
-	  	HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x1000);	// send result to PC (opt)
+	for(;;)
+	{
+		if(HAL_UART_Transmit(&huart1, &in[0], 1, 1000) == HAL_OK)// send request
+		{
+			// Receive
+			for (inSize = 0; inSize < 7; inSize++)	// max = 25.00\n\r
+			{
+				HAL_UART_Receive(&huart1, &in[inSize], 1, 0xFFFF);
+				if(in[inSize] == '\n')	break;
+			}
+	  	// Send result to PC (opt)
+	  	HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x1000);
 	  	strToUART(nl);	// makes debugging prettier
+
 	  	distance = atof(in);
-	  	//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_1);	// no heartbeat on the same pin as laserOut_*
-	  	//osDelay(100);
-	  }
-
-	  if(distance < 0.3048)			laserOut_1ft();
-	  else if(distance < 0.6096)	laserOut_2ft();
-	  else if(distance < 0.9144)	laserOut_3ft();
-	  else							laserOut_safe();
-	  osDelay(150);	// delay before checking again to save precious battery life
-
+		}
+		// Process result
+		if(distance < 0.3048)			laserOut_1ft();
+		else if(distance < 0.6096)	laserOut_2ft();
+		else if(distance < 0.9144)	laserOut_3ft();
+		else							laserOut_safe();
+		// delay before checking again to save precious battery life
+		osDelay(150);
   }
   /* USER CODE END 5 */ 
 }

@@ -3,7 +3,7 @@ datasheet:http://www.st.com/web/catalog/mmc/FM141/SC1169/SS1858/LN1902/PF260873
 Notes:	Needs programming headers: See Table 8.1.1.1 in the paper
 	Also needs one UART (two pin headers) for debugging
 	// using the same UART as dev board: PA9 PB7 USART1)
-Pinout:	{PB3, PA14, PA13}debugging, {PB7, PA9}USART1 (all female headers)
+Pinout:	{PB3, PA14, PA13, NRST}debugging, {PB7, PA9}USART1 (all female headers)
 
 Laser:		lightware SF10/A
 Web:	http://www.lightware.co.za/shop/en/drone-altimeters/33-sf10a.html )

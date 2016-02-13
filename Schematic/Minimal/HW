@@ -19,8 +19,9 @@ $:	$0.44
 P:	TSOT-23-6 
 dat:	http://www.skyworksinc.com/uploads/documents/AAT1217_202050B.pdf
 
-#Charger	MCP73811T-420I/OT
-I:	450mA
+#Charger	Microchip MCP73811T-420I/OT
+in:	3.75-6V
+out:	4.2V 450mA
 src:	http://ww1.microchip.com/downloads/en/DeviceDoc/22036b.pdf
 $:	$0.51
 P:	SOT-23-5 		
