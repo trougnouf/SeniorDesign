@@ -979,17 +979,6 @@ Text GLabel 6300 7000 0    60   Input ~ 0
 NRST
 Text GLabel 1200 5500 0    60   Input ~ 0
 NRST
-$Comp
-L GNDA #PWR?
-U 1 1 56C5E0EE
-P 10350 3950
-F 0 "#PWR?" H 10350 3700 50  0001 C CNN
-F 1 "GNDA" H 10350 3800 50  0000 C CNN
-F 2 "" H 10350 3950 50  0000 C CNN
-F 3 "" H 10350 3950 50  0000 C CNN
-	1    10350 3950
-	0    -1   -1   0   
-$EndComp
 Text GLabel 3300 5200 2    60   Output ~ 0
 PB14_MP3-RST
 Text GLabel 8200 4750 0    60   Output ~ 0
@@ -1917,4 +1906,15 @@ Connection ~ 2200 3700
 Connection ~ 2500 3950
 Connection ~ 2500 3700
 Connection ~ 2800 3950
+$Comp
+L GND #PWR?
+U 1 1 56CAACE1
+P 10350 3950
+F 0 "#PWR?" H 10350 3700 50  0001 C CNN
+F 1 "GND" H 10350 3800 50  0000 C CNN
+F 2 "" H 10350 3950 50  0000 C CNN
+F 3 "" H 10350 3950 50  0000 C CNN
+	1    10350 3950
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC
