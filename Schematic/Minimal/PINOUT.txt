@@ -31,12 +31,12 @@ Notes:
 			DATA_REQ (ready)			GPIO
 		Reset	RST					GPIO
 	
-	BT:	SDO (PCM Serial Data Output)
-		SCKT (PCM Serial Clock Output)
-		LRCKT (Left/Right Channel Selection Clock)
+	BT:	SDO (PCM Serial Data Output) to BT PCM_IN
+		SCKT (PCM Serial Clock Output) to BT PCM_CLK
+		LRCKT (Left/Right Channel Selection Clock) to BT PCM_SYNC
 		OCLK	
 	Clock:	Using 14.7456 MHz
-Pinout:	PB9 (I2C_SDA), PB6 (I2C_SCL), PA7 (SDI), PA5 (SCK), PA4(DATA_REQ), PB14 (RST)
+Pinout:	PC1 (I2C3_SDA), PC0 (I2C3_SCL), PA7 (SDI), PA5 (SCK), PA4(DATA_REQ), PB14 (RST)
 	
 	
 Bluetooth: 	Sparksfun RN-52
@@ -51,7 +51,7 @@ Notes:	Sparksfun sells a RN-52 breakout board, they provide the Eagle files.
 		PWR_EN to HIGH
 	mic:	3 (connect mic straight to MCU instead)
 	misc:	optionally (useful) GPIO5 (VOL-UP active low) and GPIO10 (VOL-Down active low) connected to input button, (useless) 2 LEDs
-	Codec:	SPI (4 pins) or PCM (4 pins), using PCM
+	Codec:	SPI (4 pins) or PCM (4 pins), using PCM (see Codec above)
 Pinout:	PA6 (MCU CTS / BT RTS), PC4 (MCU TX / BT RX), PC5 (MCU RX / BT TX), PB1 (MCU RTS / BT CTS), PB0 (GPIO9)
 	
 
@@ -59,7 +59,10 @@ SD card:	Molex 503398-1892
 Web:	https://www.digikey.com/product-detail/en/5033981892/WM11190CT-ND/5230912
 Note:	See Table 6.1.11.1 in the paper
 	SD 4bits wide bus
+	3.3V -> 47Kohm -> {cmd,d3,d2,d1,d0}
 Pinout:	PD2 (CMD), PC12 (CK), PC11 (D3), PC10 (D2), PC9 (D1), PC8 (D0), PA15 (Detect, optional)
+
+
 
 Compass: 	STMicroelectronics LSM303DTR
 Datash:		http://www.st.com/web/en/resource/technical/document/datasheet/DM00057547.pdf
@@ -70,14 +73,13 @@ Datash:		http://www.st.com/web/en/resource/technical/document/datasheet/DM000575
 		INT1 (interrupt, GPIO)				GPIO
 		INT2 (interrupt, GPIO)				GPIO
 	CS to 0, see datasheet for capacitors
-Pinout:	PC2 (SDO), PC3 (SDI), PB10 (SPC), PB12 (INT1), PB13 (INT2)
+Pinout:	PC2 (SDO), PB15 (SDI), PB10 (SPC), PB9 (CS), PB12 (INT1), PB13 (INT2)
 
 Microphone:	MEMS Microphone - INMP401
 TODO:	check for additional circuitry req.
 Web:	https://www.sparkfun.com/products/10028
 	MCU: 1 analog pin (ADC)
 	VDD, GND
-Pinout:	PC0
-
+Pinout:	PC3
 
 
