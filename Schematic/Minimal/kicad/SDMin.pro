@@ -1,4 +1,4 @@
-update=Mon Feb  8 12:53:29 2016
+update=Wed 17 Feb 2016 05:34:39 PM EST
 version=1
 last_client=kicad
 [pcbnew]
@@ -64,3 +64,4 @@ LibName32=/orb/Dev/KiCad-Libraries/components/generic
 LibName33=/orb/Dev/KiCad-Libraries/components/diodesinc
 LibName34=/orb/Dev/SeniorDesign/Schematic/components
 LibName35=Resource/st-microelectronics
+LibName36=/home/trougnouf/Dev/SeniorDesign/Schematic/components

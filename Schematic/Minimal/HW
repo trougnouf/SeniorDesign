@@ -1,5 +1,6 @@
 #MCU		STMicroelectronics STM32L476RET6
 V:	3.3V
+F:	LQFP64 0.5mm
 
 #Laser		Lightware SF10/A
 V:	5V
@@ -9,14 +10,14 @@ I:	125mA
 I:	800mA
 src:	http://www.digikey.com/product-detail/en/PAM2301CAAB330/PAM2301CAAB330DICT-ND/5267109
 $:	$0.60
-P:	TSOT-25 
+F:	TSOT-25 
 dat:	http://www.diodes.com/_files/datasheets/PAM2301.pdf
 
 #DC-DC 5V	AAT1217ICA-1.2-T1
 I:	750mA
 src:	http://www.digikey.com/product-detail/en/AAT1217ICA-1.2-T1/863-1495-1-ND/4246169
 $:	$0.44
-P:	TSOT-23-6 
+F:	TSOT-23-6 
 dat:	http://www.skyworksinc.com/uploads/documents/AAT1217_202050B.pdf
 
 #Charger	Microchip MCP73811T-420I/OT
@@ -24,38 +25,42 @@ in:	3.75-6V
 out:	4.2V 450mA
 src:	http://ww1.microchip.com/downloads/en/DeviceDoc/22036b.pdf
 $:	$0.51
-P:	SOT-23-5 		
+F:	SOT-23-5 		
 		 
 #Compass	STMicroelectronics LSM303DTR
 dat:	http://www.st.com/web/en/resource/technical/document/datasheet/DM00057547.pdf
-P:	LGA-16
+F:	LGA-16 0.5mm
 
 #Bluetooth	Microchip RN52
 dat:	http://ww1.microchip.com/downloads/en/DeviceDoc/70005120A.pdf
-P:	custom
+F:	custom
 
 #SD		Molex 5033981892
+F:	custom
 
 #Codec		STMicroelectronics STA013
 Web:	http://www.pjrc.com/mp3/sta013.html
 dat:	http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00001694.pdf
+F:	SO28 1.27mm
 
 #Microphone	INMP401
 web:	https://www.sparkfun.com/products/10028
 	https://www.sparkfun.com/products/9868
 dat:	http://www.analog.com/media/en/technical-documentation/obsolete-data-sheets/ADMP401.pdf
+F:	custom
 
 #GPS		LS20031
 web:	https://www.sparkfun.com/products/8975
 dat:	https://cdn.sparkfun.com/datasheets/GPS/LS20030~3_datasheet_v1.3.pdf
 $:	$59.95
+F:	custom
 
 add	
 	battery
-	switches(on-off))
-	buttons (5+)
-	headers (debug, uart, ++)
-	USB
+	switches(on-off)), ebay
+	buttons (5+), ebay
+	headers (debug, uart, ++), female pins
+	USB, ebay
 	
 make footprints
 
