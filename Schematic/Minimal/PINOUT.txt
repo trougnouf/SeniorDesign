@@ -36,6 +36,7 @@ Notes:
 		LRCKT (Left/Right Channel Selection Clock) to BT PCM_SYNC
 		OCLK	
 	Clock:	Using 14.7456 MHz
+BACKUP: Use MCU to generate audio
 Pinout:	PC1 (I2C3_SDA), PC0 (I2C3_SCL), PA7 (SDI), PA5 (SCK), PA4(DATA_REQ), PB14 (RST)
 	
 	
