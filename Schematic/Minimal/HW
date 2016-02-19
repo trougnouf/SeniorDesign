@@ -66,3 +66,11 @@ make footprints
 
 components to lookup:
 battery holder
+
+
+Resistors and shit:
+MCU:
+	LED:	3.3V
+	R:	10K * 8
+	C:	4.7uF * 5
+		100nF * 5

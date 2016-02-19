@@ -1,0 +1,15 @@
+
+Date		SD								COP4520
+1/25 - 1/31	Initialize SD card and filesystem, read text file
+2/01 - 2/07	Get the laser done, OS structure, bareboard, pinout (start)
+2/08 - 2/14	Presentation, pinout (finish), schematic
+2/15 - 2/21	PCB1 design, get compass done
+2/22 - 2/28	PCB1 (fix mistakes and order again), bareboard bringup
+2/29 - 3/06	(2/29 presentation, 3/01: order mcus), Bluetooth	03-05 AURA
+3/07 - 3/13	PCB1 build and bringup 						14 A3
+3/14 - 3/20	PCB2 design		3/14 ass3, 3/16 pres			16 pres
+3/21 - 3/27	Audio decoder (software or hardware)
+3/28 - 4/03	Send mp3 to bluetooth (distance indicator, directions)
+4/04 - 4/10	GPS w/compass software
+4/11 - 4/17	PCB2 build and bringup
+4/18		Presentation
