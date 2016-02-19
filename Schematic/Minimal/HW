@@ -62,10 +62,8 @@ add
 	headers (debug, uart, ++), female pins
 	USB, ebay
 	
-make footprints
-
-components to lookup:
-battery holder
+make footprints:	Battery holder (Keystone 1042/1042P)
+			SD card (Molex 5033981892)
 
 
 Resistors and shit:
@@ -74,3 +72,16 @@ MCU:
 	R:	10K * 8
 	C:	4.7uF * 5
 		100nF * 5
+	SW:	PUSH * 8
+POW:
+	C:	1uF * 2
+		10uF *2
+		4.7uF * 2
+	I:	4.7uH * 2
+	R:	332K
+		1M
+		1.02M
+	SW:	SPDT
+SD:	R:	47K * 5
+	C:	100nF
+		47uF
