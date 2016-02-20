@@ -71,15 +71,16 @@ Microphone: MEMS Microphone - INMP401 ( https://www.sparkfun.com/products/10028 
 	MCU: 1 analog pin (ADC)
 	VDD, GND
 
-Compass: STMicroelectronics LSM303DTR
+Compass: 	Melexis MLX90393
+dat:	http://www.melexis.com/Asset/MLX90393-Datasheet-DownloadLink-6427.aspx
 	MCU:
 		SPC (SPI serial port clock)
 		SDI (SPI serial data input)
 		SDO (SPI serial data output)
 		INT1 (interrupt, GPIO)
 		INT2 (interrupt, GPIO)
-	
 	CS to 0, see datasheet for capacitors
+Pinout:
 
 
 Debug pins need headers. There are 2 UART pins and 3 SWD ("SYS")

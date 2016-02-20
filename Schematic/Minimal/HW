@@ -29,7 +29,7 @@ F:	SOT-23-5
 		 
 #Compass	Melexis MLX90393
 dat:	http://www.melexis.com/Asset/MLX90393-Datasheet-DownloadLink-6427.aspx
-F:	QFN16 
+F:	QFN16 3x3mm
 
 #Bluetooth	Microchip RN52
 dat:	http://ww1.microchip.com/downloads/en/DeviceDoc/70005120A.pdf
@@ -64,6 +64,8 @@ add
 	
 make footprints:	Battery holder (Keystone 1042/1042P)
 			SD card (Molex 5033981892)
+			GPS
+			Mic
 
 
 Resistors and shit:
@@ -71,7 +73,7 @@ MCU:
 	LED:	3.3V
 	R:	10K * 8
 	C:	4.7uF * 5
-		100nF * 5
+		0.1uF * 5
 	SW:	PUSH * 8
 	H:	F*4, F*2
 POW:
@@ -87,5 +89,43 @@ SD:	R:	47K * 5
 	C:	100nF
 		47uF
 Laser:	H:	F*5
-Comp:	C:	
-
+Comp:	C:	0.1uF * 2
+GPS:	H:	F*4
+Codec:	C:	0.1uF*5
+		470pF
+		4.7nF
+		22pF*2
+	R:	4.7*2
+	misc:	14.7456MHz
+BT:	H:	M*4 *3
+	R:	470
+		47
+	Misc:	B,R LED
+	
+	
+	
+Tot:
+	H:	M*4 *3, F*4 *2, F*2
+	LED:	2*3.3V	 	732-4971-1-ND	0603(1608)
+		red		160-1436-1-ND	0603	
+	I:	4.7uH * 2	1276-6213-1-ND	1008(2520)
+	C:	4.7uF * 5	Tayda		through-hole5x11
+		1uF * 2		Tayda		through-hole5x11
+		10uF * 2	Tayda		through-hole5x11
+		47uF		Tayda		through-hole5x11
+		0.1uF*13	Tayda		0805
+		(470pF		Tayda		0805
+		4.7nF		Tayda		0805
+		22pF * 2)	Tayda		0805
+		
+	R:	10K * 8		Tayda		0805
+		332K		Tayda		0805
+		1M		Tayda		0805
+		1.02M		Tayda		0805
+		47K*5		Tayda		0805
+		4.7*2		Tayda		0805
+		470		Tayda		0805
+		47		Tayda		0805
+		
+Small components:
+Inductor: http://www.digikey.com/product-detail/en/CIG22L4R7MNE/1276-6213-1-ND/3972131
