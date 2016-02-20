@@ -1,4 +1,4 @@
-update=Wed 17 Feb 2016 05:34:39 PM EST
+update=Fri 19 Feb 2016 03:19:59 PM EST
 version=1
 last_client=kicad
 [pcbnew]
@@ -65,3 +65,4 @@ LibName33=/orb/Dev/KiCad-Libraries/components/diodesinc
 LibName34=/orb/Dev/SeniorDesign/Schematic/components
 LibName35=Resource/st-microelectronics
 LibName36=/home/trougnouf/Dev/SeniorDesign/Schematic/components
+LibName37=/home/trougnouf/Dev/kicad-library/library/sensors

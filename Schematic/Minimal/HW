@@ -27,9 +27,9 @@ src:	http://ww1.microchip.com/downloads/en/DeviceDoc/22036b.pdf
 $:	$0.51
 F:	SOT-23-5 		
 		 
-#Compass	STMicroelectronics LSM303DTR
-dat:	http://www.st.com/web/en/resource/technical/document/datasheet/DM00057547.pdf
-F:	LGA-16 0.5mm
+#Compass	Melexis MLX90393
+dat:	http://www.melexis.com/Asset/MLX90393-Datasheet-DownloadLink-6427.aspx
+F:	QFN16 
 
 #Bluetooth	Microchip RN52
 dat:	http://ww1.microchip.com/downloads/en/DeviceDoc/70005120A.pdf
@@ -73,6 +73,7 @@ MCU:
 	C:	4.7uF * 5
 		100nF * 5
 	SW:	PUSH * 8
+	H:	F*4, F*2
 POW:
 	C:	1uF * 2
 		10uF *2
@@ -85,3 +86,6 @@ POW:
 SD:	R:	47K * 5
 	C:	100nF
 		47uF
+Laser:	H:	F*5
+Comp:	C:	
+

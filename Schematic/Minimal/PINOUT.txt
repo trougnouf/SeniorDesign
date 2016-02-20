@@ -65,16 +65,17 @@ Pinout:	PD2 (CMD), PC12 (CK), PC11 (D3), PC10 (D2), PC9 (D1), PC8 (D0), PA15 (De
 
 
 
-Compass: 	STMicroelectronics LSM303DTR
-Datash:		http://www.st.com/web/en/resource/technical/document/datasheet/DM00057547.pdf
+Compass: 	Melexis MLX90393
+dat:	http://www.melexis.com/Asset/MLX90393-Datasheet-DownloadLink-6427.aspx
 	MCU:
-		SPC (SPI serial port clock)
-		SDI (SPI serial data input)
-		SDO (SPI serial data output)
-		INT1 (interrupt, GPIO)				GPIO
-		INT2 (interrupt, GPIO)				GPIO
-	CS to 0, see datasheet for capacitors
-Pinout:	PC2 (SDO), PB15 (SDI), PB10 (SPC), PB9 (CS), PB12 (INT1), PB13 (INT2)
+		INT	GPIO
+		CS
+		SCLK
+		MOSI
+		MISO
+		TRIG
+		(A0/A1 to GND)
+Pinout:	PC2 (MISO), PB15 (MOSI), PB10 (SCLK), PB9 (CS), PB12 (INT), PB13 (TRIG)
 
 Microphone:	MEMS Microphone - INMP401
 TODO:	check for additional circuitry req.
