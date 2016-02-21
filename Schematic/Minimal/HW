@@ -62,11 +62,11 @@ add
 	headers (debug, uart, ++), female pins
 	USB, ebay
 	
-make footprints:	Battery holder (Keystone 1042/1042P)
-			SD card (Molex 5033981892)
-			GPS
-			Mic
-
+make footprints:	Battery holder (Keystone 1042/1042P)	done
+			SD card (Molex 5033981892)		done
+			GPS					headers
+			Mic					headers
+			BT
 
 Resistors and shit:
 MCU:
@@ -86,7 +86,7 @@ POW:
 		1.02M
 	SW:	SPDT
 SD:	R:	47K * 5
-	C:	100nF
+	C:	0.1uF
 		47uF
 Laser:	H:	F*5
 Comp:	C:	0.1uF * 2
@@ -109,11 +109,11 @@ Tot:
 	LED:	2*3.3V	 	732-4971-1-ND	0603(1608)
 		red		160-1436-1-ND	0603	
 	I:	4.7uH * 2	1276-6213-1-ND	1008(2520)
-	C:	4.7uF * 5	Tayda		through-hole5x11
+	C:	4.7uF * 7	Tayda		through-hole5x11
 		1uF * 2		Tayda		through-hole5x11
 		10uF * 2	Tayda		through-hole5x11
 		47uF		Tayda		through-hole5x11
-		0.1uF*13	Tayda		0805
+		0.1uF*14	Tayda		0805
 		(470pF		Tayda		0805
 		4.7nF		Tayda		0805
 		22pF * 2)	Tayda		0805

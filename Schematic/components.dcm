@@ -54,4 +54,10 @@ K stm32 stm32l4 stmicroelectronics microcontroller mcu
 F http://www.st.com/web/jp/resource/technical/document/datasheet/DM00108832.pdf
 $ENDCMP
 #
+$CMP uSD_Card
+D SD Card Reader
+K CONN SD
+F http://portal.fciconnect.com/Comergent//fci/drawing/10067847.pdf
+$ENDCMP
+#
 #End Doc Library
