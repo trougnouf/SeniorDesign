@@ -3,7 +3,7 @@ datasheet:http://www.st.com/web/catalog/mmc/FM141/SC1169/SS1858/LN1902/PF260873
 Notes:	Needs programming headers: See Table 8.1.1.1 in the paper
 	Also needs one UART (two pin headers) for debugging
 	// using the same UART as dev board: PA9 PB7 USART1)
-Pinout:	{PB3, PA14, PA13, NRST}debugging, {PB7, PA9}USART1 (all female headers)
+Pinout:	{PB3, PA14, PA13, NRST}debugging headers, {PB7, PA9}USART1 headers
 
 Laser:		lightware SF10/A
 Web:	http://www.lightware.co.za/shop/en/drone-altimeters/33-sf10a.html )
@@ -14,7 +14,7 @@ Pinout:	PA0, PA1 (all female headers)
 GPS:		Sparksfun LS20031
 Web:	https://www.sparkfun.com/products/8975 )
 Notes:	UART (2 pins)
-Pinout:	PF6 (RX mcu/TX GPS), PF7 (TX MCU/RX GPS)
+Pinout:	PF6 (TX GPS), PF7 (RX GPS)
 
 Codec:		STMicroelectronics STA013
 Web:	http://www.pjrc.com/mp3/sta013.html
@@ -28,13 +28,13 @@ Notes:
 			DATA_REQ (ready)			GPIO
 		Reset	RST					GPIO
 	
-	BT:	SDO (PCM Serial Data Output)
-		SCKT (PCM Serial Clock Output)
-		LRCKT (Left/Right Channel Selection Clock)
-		OCLK
+	BT:	SDO (PCM Serial Data Output) to BT PCM_IN
+		SCKT (PCM Serial Clock Output) to BT PCM_CLK
+		LRCKT (Left/Right Channel Selection Clock) to BT PCM_SYNC
+		OCLK	
 		
 	Clock:	Using 14.7456 MHz
-Pinout:	PB11 (I2C_SDA), PB10 (I2C_SCL), PC1 (SDI), PB12 (DATA_REQ), PB14 (RST)
+Pinout:	PB11 (I2C_SDA), PB10 (I2C_SCL), PC1 (SDI), PB12 (DATA_REQ), PB13 (SCK), PB14 (RST) any pin (DATA_REQ), any pin (RST), connect to BT (see BT above)
 
 Camera:		OV9655 Camera board
 Web:	http://www.waveshare.com/ov9655-camera-board.htm
@@ -43,8 +43,8 @@ Notes:	See Table 6.1.10.1 in the paper
 	Connects to a flex cable. Got https://www.digikey.com/product-detail/en/HFW24S-2STE1LF/609-1125-1-ND/1003108
 	or
 	Match the schematic (0.1" headers)
-	
-Pinout:	
+Pinout:	PE3 (PWDN), PC13 (RET), PA6 (PIXCLK), PA4 (HSYNC), PG9 (vsync), PC6 (D2), PA10 (D3), PG10 (D4), PG11 (D5), PE4 (D6), PD3 (D7), PE5 (D8), PE6 (D9) any pin (SIOC), any pin (SOIC). All female headers, match picture shown on the website for insertion.
+
 
 Bluetooth: 	Sparksfun RN-52
 Web:	https://www.sparkfun.com/products/11678
@@ -54,22 +54,29 @@ Notes:	Sparksfun sells a RN-52 breakout board, they provide the Eagle files.
 	mic: 3
 	misc: 2 LEDs
 	codec: SPI (4 pins) or PCM (4 pins), probably PCM
-	
+Pinout:	PG14 (RX), PG13 (RTS), PG12 (CTS), PC7 (TX), any pin (GPIO9) (optional LEDs, see datasheet)
+
 
 RAM: Alliance Memory, Inc. AS4C4M16SA-6TIN ( https://www.digikey.com/product-detail/en/AS4C4M16SA-6TIN/1450-1260-ND/5214136 )
-SDCKE0+SDNE0
-4 banks, 12 bits address, 16 bits data, 16-bit byte enable
+	SDCKE0+SDNE0 4 banks, 12 bits address, 16 bits data, 16-bit byte enable
+Pinout:	PF0 (A0), PF1 (A1), PF2 (A2), PF3 (A3), PF4 (A4), PF5 (A5), PF12 (A6), PF13 (A7), PF14 (A8), PF15 (A9), PG0 (A10), PG1 (A11), PE7 (D4), PE8 (D5), PE9 (D6), PE10 (D7), PE11 (D8), PE12 (D9), PE13 (D10), PE14 (D11), PE15 (D12), PD8 (D13), PD9 (D14), PD10 (D15), PD14 (D0), PD15 (D1), PG4 (BA0), PG5 (BA1), PG8 (SDCLK), PD0 (D2), PD1 (D3), PG15 (SDNCAS), PE0 (NBL0), PE1 (NBL1) PC0 (SDNWE), PC2 (SDNE0), PC3 (SDCKE0), PF11 (SDNRAS)
 
-SD card: Molex 503398-1892 ( https://www.digikey.com/product-detail/en/5033981892/WM11190CT-ND/5230912 )
+
+SD card: Molex 503398-1892
+Web:	https://www.digikey.com/product-detail/en/5033981892/WM11190CT-ND/5230912
 	See Table 6.1.11.1 in the paper
 	SD 4bits wide bus
+Pinout:	PD2 (CMD), PC12 (clock), PC11 (D3), PC10 (D2), PC9 (D1), PC8 (D0), any pin (detect)
 
-Flash: Micron Technology Inc. N25Q128A13ESE40E ( https://www.digikey.com/product-detail/en/N25Q128A13ESE40E/557-1562-ND/3874288 )
-Bank1 with Quad SPI Lines
+Flash: Micron Technology Inc. N25Q128A13ESE40E
+Web:	https://www.digikey.com/product-detail/en/N25Q128A13ESE40E/557-1562-ND/3874288
+	Bank1 with Quad SPI Lines
+Pinout:	PD13 (IO3), PE2 (IO2), PF9 (IO1), PF8 (IO0), PB2 (clock), PB6 (NCS)
 
 Microphone: MEMS Microphone - INMP401 ( https://www.sparkfun.com/products/10028 )
 	MCU: 1 analog pin (ADC)
 	VDD, GND
+Pinout:	PA2
 
 Compass: 	Melexis MLX90393
 dat:	http://www.melexis.com/Asset/MLX90393-Datasheet-DownloadLink-6427.aspx
@@ -79,9 +86,8 @@ dat:	http://www.melexis.com/Asset/MLX90393-Datasheet-DownloadLink-6427.aspx
 		SDO (SPI serial data output)
 		INT1 (interrupt, GPIO)
 		INT2 (interrupt, GPIO)
-	CS to 0, see datasheet for capacitors
 Pinout:
-
+	PB4 (MISO), PA5 (SCLK), PA7 (MOSI), any (CS), any (INT), any (TRIG)
 
 Debug pins need headers. There are 2 UART pins and 3 SWD ("SYS")
 
