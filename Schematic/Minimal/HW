@@ -127,5 +127,17 @@ Tot:
 		470		Tayda		0805
 		47		Tayda		0805
 		
+Schottky diode:
+Laser: need 125mA for laser, getting 250+. No need to worry about reverse, almost never used before switch
+				FW voltage
+Panasonic DB2J20900L	$0.063	0.5V@500mA
+Panasonic DB2J20800L 	$0.08	0.420V@500mA
+Microsemi  LSM115JE3/TR13 	$0.95@1	220mV@1A
+Diodes Incorporated DFLS130L-7	$0.45@1	310mV@1A
+ON  MBR120VLSFT3G	$0.38@1	340mV@1A
+
+Diodes Incorporated DFLS130L-7:
+
+
 Small components:
 Inductor: http://www.digikey.com/product-detail/en/CIG22L4R7MNE/1276-6213-1-ND/3972131
