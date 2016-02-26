@@ -1,0 +1,85 @@
+
+(rules PCB SDMin12
+  (snap_angle 
+    fortyfive_degree
+  )
+  (autoroute_settings
+    (fanout off)
+    (autoroute on)
+    (postroute on)
+    (vias on)
+    (via_costs 50)
+    (plane_via_costs 5)
+    (start_ripup_costs 100)
+    (start_pass_no 24261)
+    (layer_rule F.Cu
+      (active on)
+      (preferred_direction vertical)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 2.8)
+    )
+    (layer_rule B.Cu
+      (active on)
+      (preferred_direction horizontal)
+      (preferred_direction_trace_costs 1.0)
+      (against_preferred_direction_trace_costs 1.6)
+    )
+  )
+  (rule
+    (width 250.0)
+    (clear 200.2)
+    (clear 125.0 (type smd_to_turn_gap))
+    (clear 50.0 (type smd_smd))
+  )
+  (padstack "Via[0-1]_600:400_um"
+    (shape
+      (circle F.Cu 600.0 0.0 0.0)
+    )
+    (shape
+      (circle B.Cu 600.0 0.0 0.0)
+    )
+    (attach off)
+  )
+  (via 
+    "Via[0-1]_600:400_um" "Via[0-1]_600:400_um" default
+  )
+  (via 
+    "Via[0-1]_600:400_um-kicad_default" "Via[0-1]_600:400_um" "kicad_default"
+  )
+  (via_rule
+    default "Via[0-1]_600:400_um"
+  )
+  (via_rule
+    "kicad_default" "Via[0-1]_600:400_um-kicad_default"
+  )
+  (class default
+    (clearance_class default)
+    (via_rule default)
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+  (class "kicad_default"
+    GND +BATT +5V +3V3 "PD2_SD-CMD" "PC10_SD-D2" "PC11_SD-D3" "PC12_SD-CK"
+    "PC8_SD-D0" "PC9_SD-D1" "PA15_SD-DET" "Net-(L2-Pad1)" /in5 /in6 /in7 /in8
+    /in1 /in2 /in3 /in4 "PC13_dbg" NRST "PC0_MP3-SCL" "PC1_MP3-SDA"
+    "PC2_MAG-MISO" "PA0_las" "PA1_las" "PA2_UART" "PA3_UART" "PA4_BTpcm-Sync" "PA5_MP3-SCK" "PA6_BT-RTS"
+    "PA7_MP3-SDI" "PC4_BT-RX" "PC5_BT-TX" "PB1_BT-CTS" "PB2_BT-GP2" "PB10_MAG-SPC" "Net-(D1-Pad2)" "PB12_MAG-INT"
+    "PB13_MAG-TRIG" "PB14_MP3-RST" "PB15_MAG-MOSI" "PC6_MP3-DR" "PA9_GPS-RX" "PA13_dbg" "PA14_dbg" "PB3_BTpcm-CLK"
+    "PB5_BTpcm-IN" "PB7_GPS-TX" "PB9_MAG-CS" "Net-(P4-Pad4)" "Net-(P4-Pad1)" "Net-(P4-Pad2)" "Net-(C26-Pad1)" "Net-(C28-Pad1)"
+    "Net-(C29-Pad1)" "Net-(C27-Pad1)" "Net-(D2-Pad2)" "Net-(D2-Pad1)" "Net-(D3-Pad2)" "Net-(D3-Pad1)" "Net-(P3-Pad1)" "Net-(P3-Pad2)"
+    "Net-(P3-Pad3)" "Net-(P3-Pad4)" "Net-(L1-Pad2)" "Net-(C3-Pad2)" "Net-(C26-Pad2)" "Net-(C30-Pad1)" "PB0_mic" "PB11_BT-GP9"
+    "x-in-1" "x-in-2" /3VEN /5VEN
+    (clearance_class "kicad_default")
+    (via_rule kicad_default)
+    (rule
+      (width 250.0)
+    )
+    (circuit 
+      (use_layer F.Cu B.Cu)
+    )
+  )
+)
