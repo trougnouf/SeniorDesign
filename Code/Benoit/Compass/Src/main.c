@@ -180,9 +180,9 @@ void MX_SPI1_Init(void)
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
+  hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
+  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
   hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLED;
@@ -200,7 +200,7 @@ void MX_USART2_UART_Init(void)
 
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 38400;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.WordLength = UART_WORDLENGTH_7B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
   huart2.Init.Mode = UART_MODE_TX_RX;
@@ -241,12 +241,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(INT_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : CS_Pin LD2_Pin */
-  GPIO_InitStruct.Pin = CS_Pin|LD2_Pin;
+  /*Configure GPIO pin : LD2_Pin */
+  GPIO_InitStruct.Pin = LD2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : TRIG_Pin */
   GPIO_InitStruct.Pin = TRIG_Pin;
@@ -256,7 +256,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(TRIG_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, CS_Pin|LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(TRIG_GPIO_Port, TRIG_Pin, GPIO_PIN_RESET);
@@ -289,7 +289,7 @@ void StartDefaultTask(void const * argument)
 	uint8_t statusByte;
 	uint8_t cmdByte;
 	char write_buffer[10];
-	uint8_t inputBuf[100];
+	uint8_t inputBuf[10];
 	inputBuf[2] = '\n';
 	inputBuf[3] = '\r';
 
@@ -321,7 +321,7 @@ void StartDefaultTask(void const * argument)
 	  SPIstatus = HAL_SPI_TransmitReceive(&hspi1, &cmdByte, &statusByte, 1, 1000);
 	  if(!(statusByte == 0 || statusByte == 255))
 	  {
-		  HAL_SPI_Receive(&hspi1,inputBuf, 3, 1000);
+		  HAL_SPI_Receive(&hspi1,inputBuf, 5, 1000);
 			sprintf(write_buffer, "%u", statusByte);
 			HAL_UART_Transmit(&huart2, write_buffer, 4, 1000);
 
@@ -359,5 +359,5 @@ void assert_failed(uint8_t* file, uint32_t line)
 /**
   * @}
 */ 
-#pragma GCC pop_options
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
