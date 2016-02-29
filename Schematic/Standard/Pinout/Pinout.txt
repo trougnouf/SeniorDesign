@@ -43,7 +43,7 @@ Notes:	See Table 6.1.10.1 in the paper
 	Connects to a flex cable. Got https://www.digikey.com/product-detail/en/HFW24S-2STE1LF/609-1125-1-ND/1003108
 	or
 	Match the schematic (0.1" headers)
-Pinout:	PE3 (PWDN), PC13 (RET), PA6 (PIXCLK), PA4 (HSYNC), PG9 (vsync), PC6 (D2), PA10 (D3), PG10 (D4), PG11 (D5), PE4 (D6), PD3 (D7), PE5 (D8), PE6 (D9), PA8 (XCLK) any pin (SIOC), any pin (SOIC). All female headers, match picture shown on the website for insertion.
+Pinout:	PE3 (PWDN), PC13 (RET), PA6 (PIXCLK), PA4 (HSYNC), PG9 (vsync), PC6 (D2), PA10 (D3), PG10 (D4), PG11 (D5), PE4 (D6), PD3 (D7), PE5 (D8), PE6 (D9) PB9 (SIOD), PB8 (SIOC), PA8 (XCLK). All female headers, match picture shown on the website for insertion.
 
 
 Bluetooth: 	Sparksfun RN-52
@@ -54,7 +54,7 @@ Notes:	Sparksfun sells a RN-52 breakout board, they provide the Eagle files.
 	mic: 3
 	misc: 2 LEDs
 	codec: SPI (4 pins) or PCM (4 pins), probably PCM
-Pinout:	PG14 (RX), PG13 (RTS), PG12 (CTS), PC7 (TX), any pin (GPIO9) (optional LEDs, see datasheet)
+Pinout:	PG14 (RX), PG13 (RTS), PG12 (CTS), PC7 (TX), any pin (GPIO9) (optional LEDs, see datasheet), PA3 (Audio out)
 
 
 RAM: Alliance Memory, Inc. AS4C4M16SA-6TIN ( https://www.digikey.com/product-detail/en/AS4C4M16SA-6TIN/1450-1260-ND/5214136 )
@@ -66,7 +66,8 @@ SD card: Molex 503398-1892
 Web:	https://www.digikey.com/product-detail/en/5033981892/WM11190CT-ND/5230912
 	See Table 6.1.11.1 in the paper
 	SD 4bits wide bus
-Pinout:	PD2 (CMD), PC12 (clock), PC11 (D3), PC10 (D2), PC9 (D1), PC8 (D0), any pin (detect)
+old Pinout:	PD2 (CMD), PC12 (clock), PC11 (D3), PC10 (D2), PC9 (D1), PC8 (D0), any pin (detect)
+Oinout:		PD2 (CMD/DI), PC12 (CK), PC8 (D0)
 
 Flash: Micron Technology Inc. N25Q128A13ESE40E
 Web:	https://www.digikey.com/product-detail/en/N25Q128A13ESE40E/557-1562-ND/3874288
