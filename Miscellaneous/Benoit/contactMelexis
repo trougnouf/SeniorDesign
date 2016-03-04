@@ -1,0 +1,19 @@
+Status byte after reset: 0?
+Does reset count as the first command to set the the mode to SPI?
+Would (freq) work?
+100mV from MISO
+
+
+img7: reset -> 100111 (single, RS, D1, D0)
+img8: 01001111(r) -> 10010011
+
+img9(?): in receive mode but somehow sending (?). s/r:10010011=err,changing
+
+Should receive 1000x011
+
+
+69k,31M
+
+
+// Reset: 11110000 = 0xf0
+// Start burst mode: 00011111 = 0x1f
