@@ -17,3 +17,28 @@ Should receive 1000x011
 
 // Reset: 11110000 = 0xf0
 // Start burst mode: 00011111 = 0x1f
+
+1st result:
+compin	uint8_t [9]	0x20000208 <ucHeap+492>	
+	compin[0]	uint8_t	35 100011 (Binary)	
+	compin[1]	uint8_t	180 10110100 (Binary)	
+	compin[2]	uint8_t	233 'é'	
+	compin[3]	uint8_t	1 '\001'	
+	compin[4]	uint8_t	24 '\030'	
+	compin[5]	uint8_t	252 'ü'	
+	compin[6]	uint8_t	138 '\212'	
+	compin[7]	uint8_t	254 'þ'	
+	compin[8]	uint8_t	64 '@'	
+
+2:
+compin	uint8_t [9]	100000000000000000001000001000 (Binary)	
+	compin[0]	uint8_t	100011 (Binary)	
+	compin[1]	uint8_t	10110100 (Binary)	
+	compin[2]	uint8_t	11101001 (Binary)	
+	compin[3]	uint8_t	1 (Binary)	
+	compin[4]	uint8_t	11000 (Binary)	
+	compin[5]	uint8_t	11111100 (Binary)	
+	compin[6]	uint8_t	10001010 (Binary)	
+	compin[7]	uint8_t	11111110 (Binary)	
+	compin[8]	uint8_t	1000000 (Binary)	
+

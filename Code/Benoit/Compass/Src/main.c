@@ -41,6 +41,8 @@
 // cross-platform macros
 #define COMP_CS GPIO_PIN_4
 #define COMP_CS_P GPIOA
+#define COMP_INT GPIO_PIN_1
+#define COMP_INT_P GPIOA
 
 /* USER CODE END Includes */
 
@@ -291,121 +293,43 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-	HAL_StatusTypeDef SPIstatus;
-	HAL_SPI_StateTypeDef SPIstate;
-	uint8_t statusByte;
 	uint8_t cmdByte;
-	char write_buffer[10];
-	uint8_t inputBuf[10];
-	inputBuf[2] = '\n';
-	inputBuf[3] = '\r';
+	uint8_t stByte;
+	uint8_t compin[9];
 
-	// Reset: 11110000 = 0xf0
-	//HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	//cmdByte = 0xf0;
-	//SPIstatus = HAL_SPI_TransmitReceive(&hspi1, &cmdByte, &statusByte, 1, 1000);
-	//HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	//osDelay(10);
-
-	/*
-	// Start burst mode: 00011111 = 0x1f
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	cmdByte = 0x1f;
-	SPIstatus = HAL_SPI_TransmitReceive(&hspi1, &cmdByte, &statusByte, 1, 1000);
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	cmdByte = 0x4F;
-	do {
-		HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-		SPIstatus = HAL_SPI_TransmitReceive(&hspi1, &cmdByte, &statusByte, 1, 1000);
-		HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-		//SPIstatus = HAL_SPI_Receive(&hspi1, &statusByte, 1, 1000);
-		sprintf(write_buffer, "%u", statusByte);
-		HAL_UART_Transmit(&huart2, write_buffer, 4, 1000);
-	} while(statusByte == 0 || statusByte == 255);
-	*/
-/*
 	// Reset: 11110000 = 0xf0
 	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
 	cmdByte = 0xf0;
-	SPIstatus = HAL_SPI_TransmitReceive(&hspi1, &cmdByte, &statusByte, 1, 1000);
-	//HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	SPIstate = HAL_SPI_GetState(&hspi1);
-	uint8_t receiveBuffer[100];
-	*/
+	HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
+	HAL_SPI_Receive(&hspi1, &stByte, 1, 1000);
+	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
+	osDelay(1);
+
   /* Infinite loop */
 
-
-	osDelay(1);
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	osDelay(1);
-	// Reset: 11110000 = 0xf0
-	cmdByte = 0xf0;
-	SPIstatus = HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	osDelay(1);
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	osDelay(1);
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	// Start burst mode: 00011111 = 0x1f
-	cmdByte = 0x1f;
-	SPIstatus = HAL_SPI_TransmitReceive(&hspi1, &cmdByte, &statusByte, 1, 1000);
-	//SPIstatus = HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	//SPIstatus = HAL_SPI_Receive(&hspi1, &statusByte, 1, 1000);
-	osDelay(1);
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	osDelay(1);
-	//HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	osDelay(1);
-	uint32_t fourbytes;
-	// Write register
   for(;;)
   {
-		// Reset: 11110000 = 0xf0
-		//HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-		//cmdByte = 0xf0;
-		//HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-		//osDelay(1);
-	  // Read measurement: 01001111 = 0x4F
-		cmdByte = 0x4f;
-	    HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	  	osDelay(1);
-		SPIstatus = HAL_SPI_TransmitReceive(&hspi1, &cmdByte, &statusByte, 1, 1000);
-		osDelay(1);
-		HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-		osDelay(1);
-		//HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-		//osDelay(1);
-		//HAL_SPI_Receive(&hspi1,&statusByte, 1, 1000);
 
-		//osDelay(1);
-	  /*
-	  osDelay(1);
-	  // Read measurement: 01001111 = 0x4F
-	  //HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	  cmdByte = 0x4F;
-	  //cmdByte = 0;
-	  //HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	  SPIstatus = HAL_SPI_TransmitReceive(&hspi1, &cmdByte, &statusByte, 1, 1000);
-	  //SPIstatus = HAL_SPI_Receive(&hspi1, &statusByte, 1, 1000);
-	  osDelay(1);
-	  */
-	  //HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
 
-	  /*
-	  if(!(statusByte == 0 || statusByte == 255))
-	  {
-		  HAL_SPI_Receive(&hspi1,inputBuf, 5, 1000);
-			sprintf(write_buffer, "%u", statusByte);
-			HAL_UART_Transmit(&huart2, write_buffer, 4, 1000);
-	  }
+	  // Single measurement mode:
+	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
+	  cmdByte = (0x30)|0xf;
+	  HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
+	  HAL_SPI_Receive(&hspi1, &stByte, 1, 1000);
 	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	  osDelay(10);
-	  */
+	  //osDelay(1);
 
+	  // Wait for interrupt
+	  while(!HAL_GPIO_ReadPin(COMP_INT_P, COMP_INT));
 
-		//HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-		//osDelay(1);
-		//osDelay(1);
-		//HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
+	  // Read measurement: 01001111 = 0x4F
+	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
+	  cmdByte = 0x4f;
+	  HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
+	  HAL_SPI_Receive(&hspi1, &compin, 9, 1000);
+	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
+	  osDelay(1);
+
   }
 #pragma GCC pop_options
   /* USER CODE END 5 */ 
