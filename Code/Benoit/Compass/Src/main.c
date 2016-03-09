@@ -295,7 +295,7 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN 5 */
 	uint8_t cmdByte;
 	uint8_t stByte;
-	uint8_t compin[9];
+	uint8_t compin[7];
 
 	// Reset: 11110000 = 0xf0
 	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
@@ -304,6 +304,8 @@ void StartDefaultTask(void const * argument)
 	HAL_SPI_Receive(&hspi1, &stByte, 1, 1000);
 	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
 	osDelay(1);
+
+	// read register
 
   /* Infinite loop */
 
