@@ -313,7 +313,7 @@ void StartDefaultTask(void const * argument)
 
 	  // Single measurement mode:
 	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	  cmdByte = (0x30)|0xf;
+	  cmdByte = (0x30)|0xe;
 	  HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
 	  HAL_SPI_Receive(&hspi1, &stByte, 1, 1000);
 	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
@@ -326,7 +326,7 @@ void StartDefaultTask(void const * argument)
 	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
 	  cmdByte = 0x4f;
 	  HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	  HAL_SPI_Receive(&hspi1, &compin, 9, 1000);
+	  HAL_SPI_Receive(&hspi1, &compin, 7, 1000);
 	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
 	  osDelay(1);
 

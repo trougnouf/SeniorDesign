@@ -42,3 +42,78 @@ compin	uint8_t [9]	100000000000000000001000001000 (Binary)
 	compin[7]	uint8_t	11111110 (Binary)	
 	compin[8]	uint8_t	1000000 (Binary)	
 
+
+towards elevator:
+argument	const void *	0xa5a5a5a5	
+cmdByte	uint8_t	79 'O'	
+stByte	uint8_t	35 '#'	
+compin	uint8_t [9]	0x20000208 <ucHeap+492>	
+	compin[0]	uint8_t	3 '\003'	
+	compin[1]	uint8_t	180 '´'	
+	compin[2]	uint8_t	123 '{'	
+	compin[3]	uint8_t	1 '\001'	
+	compin[4]	uint8_t	222 'Þ'	
+	compin[5]	uint8_t	253 'ý'	
+	compin[6]	uint8_t	48 '0'	
+	compin[7]	uint8_t	254 'þ'	
+
+towards free table: (north?)
+argument	const void *	0xa5a5a5a5	
+cmdByte	uint8_t	79 'O'	
+stByte	uint8_t	35 '#'	
+compin	uint8_t [9]	0x20000208 <ucHeap+492>	
+	compin[0]	uint8_t	3 '\003'	
+	compin[1]	uint8_t	180 '´'	
+	compin[2]	uint8_t	143 '\217'	
+	compin[3]	uint8_t	1 '\001'	
+	compin[4]	uint8_t	120 'x'	
+	compin[5]	uint8_t	252 'ü'	
+	compin[6]	uint8_t	142 '\216'	
+	compin[7]	uint8_t	254 'þ'	
+	compin[8]	uint8_t	78 'N'	
+
+towards lockers:
+argument	const void *	0xa5a5a5a5	
+cmdByte	uint8_t	79 'O'	
+stByte	uint8_t	35 '#'	
+compin	uint8_t [9]	0x20000208 <ucHeap+492>	
+	compin[0]	uint8_t	3 '\003'	
+	compin[1]	uint8_t	180 '´'	
+	compin[2]	uint8_t	137 '\211'	
+	compin[3]	uint8_t	2 '\002'	
+	compin[4]	uint8_t	24 '\030'	
+	compin[5]	uint8_t	251 'û'	
+	compin[6]	uint8_t	181 'µ'	
+	compin[7]	uint8_t	254 'þ'	
+	compin[8]	uint8_t	98 'b'	
+
+towards radioroom:
+argument	const void *	0xa5a5a5a5	
+cmdByte	uint8_t	79 'O'	
+stByte	uint8_t	35 '#'	
+compin	uint8_t [9]	0x20000208 <ucHeap+492>	
+	compin[0]	uint8_t	3 '\003'	
+	compin[1]	uint8_t	180 '´'	
+	compin[2]	uint8_t	150 '\226'	
+	compin[3]	uint8_t	2 '\002'	
+	compin[4]	uint8_t	237 'í'	
+	compin[5]	uint8_t	252 'ü'	
+	compin[6]	uint8_t	81 'Q'	
+	compin[7]	uint8_t	254 'þ'	
+	compin[8]	uint8_t	114 'r'	
+
+1st bit is useless
+2-3 are temp, taken off in the future.
+180 143  10110100 10001111  46223?
+180 137  10110100 10001001  46217?
+180 150  10110100 10010110  46230?
+46244 = 25 C
+45.2/degree?
+25−(46244−46223)÷45.2 = 24.5354
+
+4-5 X
+1 222	1  11011110	478
+1 120	1  01111000	376
+2 24	10 00011000	536
+2 237	10 11101101	749
+
