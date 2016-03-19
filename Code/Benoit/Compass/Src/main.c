@@ -35,6 +35,7 @@
 #include "cmsis_os.h"
 
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
 // disable optimizations
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
@@ -43,6 +44,8 @@
 #define COMP_CS_P GPIOA
 #define COMP_INT GPIO_PIN_1
 #define COMP_INT_P GPIOA
+
+#define COMP_RR	1
 
 /* USER CODE END Includes */
 
@@ -202,7 +205,7 @@ void MX_USART2_UART_Init(void)
 
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 38400;
-  huart2.Init.WordLength = UART_WORDLENGTH_7B;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
   huart2.Init.Mode = UART_MODE_TX_RX;
@@ -288,50 +291,139 @@ HAL_StatusTypeDef SPI_IO(char *receiveBuffer, char * sendBuffer, int sendMessage
 
 /* USER CODE END 4 */
 
+// Useful debugging info
+void dbg_uartout(uint8_t * inBuf, uint8_t * outBuf, uint8_t * msg)
+{
+	if(outBuf[0] == 62)	// SSMM
+	{
+		msg = "SMM:\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	else if(outBuf[0] == 78)	// RM
+	{
+		msg = "RM:\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	else if(outBuf[0] == 240)	// RST
+	{
+		msg = "RST:\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	else if(outBuf[0] == 80)	// RR
+	{
+		msg = "RR:\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	if(inBuf[0] & 128)	msg = "BM\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 64)	msg = "WC\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 32)	msg = "SM\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 16)	msg = "ER\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 8)	msg = "SD\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 4)	msg = "RS\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 2)	msg = "D1\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 1)	msg = "D0\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(HAL_GPIO_ReadPin(COMP_INT_P, COMP_INT))
+	{
+		msg = "RDY\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	msg = "\n\n\r";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+}
+
+// I/O
+void send_SPI(uint8_t * inBuf, uint8_t inLength, uint8_t * outBuf, uint8_t outLength)
+{
+	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi1, outBuf, outLength, 1000);
+	HAL_SPI_Receive(&hspi1, inBuf, inLength, 1000);
+	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
+}
+
+// Print results as integers
+void compass_uart(int16_t * inints, uint8_t * msg)
+{
+	sprintf(msg, "x: %5d\t", inints[0]);
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	sprintf(msg, "y: %5d\t", inints[1]);
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	sprintf(msg, "z: %5d\t", inints[2]);
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	msg = "\n\r";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+}
+
+// Convert raw input bits to integers
+void rawToInt(uint8_t * inbuf, int16_t * inints)
+{
+	inints[0] = (int16_t)inbuf[1] << 8 | inbuf[2];	// x
+	inints[1] = (int16_t)inbuf[3] << 8 | inbuf[4];	// y
+	inints[2] = (int16_t)inbuf[5] << 8 | inbuf[6];	// z
+}
+
+
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-	uint8_t cmdByte;
-	uint8_t stByte;
-	uint8_t compin[7];
+	uint8_t inbuf[7];
+	uint8_t outbuf[2];
+	int16_t inints[3];
+	uint8_t * msg = malloc(10);
 
 	// Reset: 11110000 = 0xf0
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	cmdByte = 0xf0;
-	HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	HAL_SPI_Receive(&hspi1, &stByte, 1, 1000);
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	osDelay(1);
+	outbuf[0] = 0xf0;
+	send_SPI(inbuf, 1, outbuf, 1);
+	dbg_uartout(inbuf, outbuf, msg);
 
-	// read register
+
+	/*
+	// Read register 0
+	outbuf[0] = 80;
+	outbuf[1] = 0 << 2;
+	send_SPI(inbuf, 3, outbuf, 2);
+	dbg_uartout(inbuf, outbuf, msg);
+	*/
+
 
   /* Infinite loop */
 
   for(;;)
   {
+	  // Start single measurement mode
+	  outbuf[0] = 62;	// 0011zyxt
+	  send_SPI(inbuf, 1, outbuf, 1);
+	  //dbg_uartout(inbuf, outbuf, msg);
 
-
-	  // Single measurement mode:
-	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	  cmdByte = (0x30)|0xe;
-	  HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	  HAL_SPI_Receive(&hspi1, &stByte, 1, 1000);
-	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	  //osDelay(1);
-
-	  // Wait for interrupt
 	  while(!HAL_GPIO_ReadPin(COMP_INT_P, COMP_INT));
 
-	  // Read measurement: 01001111 = 0x4F
-	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	  cmdByte = 0x4f;
-	  HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	  HAL_SPI_Receive(&hspi1, &compin, 7, 1000);
-	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	  osDelay(1);
+	  //Read measurement
+	  outbuf[0] = 78;
+	  send_SPI(inbuf, 7, outbuf, 1);
+	  //dbg_uartout(inbuf, outbuf, msg);
 
+	  rawToInt(inbuf, inints);
+	  compass_uart(inints, msg);
+
+	  for(uint8_t i=0;i<7;i++)	inbuf[i]=0;
+	  osDelay(100);
   }
 #pragma GCC pop_options
   /* USER CODE END 5 */ 

@@ -1,0 +1,33 @@
+At CPOL=1 the base value of the clock is one (inversion of CPOL=0), i.e. the active state is 0 and idle state is 1. 
+For CPHA=1, data are captured on clock's rising edge and data is output on a falling edge.
+
+-> SPI mode 3
+
+Registers:
+0	00000000 01111100
+3	01010110 01000100
+
+GAIN_SEL = 111 = 7
+HALLCONF = 1100
+SENS_TC_HT = 01010110
+SENS_TC_LT = 01000100
+
+:
+
+Most likely 2's complement +/- 2^15 0uT=0LSB
+SENS_XY=0.403	SENS_Z=0.734
+
+Using compass 2:
+Door:	x 11xx-12xx
+	y 14xx
+	z -2xx (-3xx)
+radio:	x 12xx 13xx
+	y (11xx) 12xx
+	z -2xx -3xx
+locker:	x 10xx 11xx
+	y 10xx 11xx
+freetb:	x 9xx
+	y 13xx
+	
+range: 900-1500?
+
