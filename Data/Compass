@@ -1,4 +1,0 @@
-At CPOL=1 the base value of the clock is one (inversion of CPOL=0), i.e. the active state is 0 and idle state is 1. 
-For CPHA=1, data are captured on clock's rising edge and data is output on a falling edge.
-
--> SPI mode 3

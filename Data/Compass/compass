@@ -1,0 +1,50 @@
+At CPOL=1 the base value of the clock is one (inversion of CPOL=0), i.e. the active state is 0 and idle state is 1. 
+For CPHA=1, data are captured on clock's rising edge and data is output on a falling edge.
+
+-> SPI mode 3
+
+Registers:
+0	00000000 01111100
+3	01010110 01000100
+
+GAIN_SEL = 111 = 7
+HALLCONF = 1100
+SENS_TC_HT = 01010110
+SENS_TC_LT = 01000100
+
+:
+
+Most likely 2's complement +/- 2^15 0uT=0LSB
+GAIN_SEL=3: SENS_XY=0.403	SENS_Z=0.734
+GAIN_SEL=7: SENS_XY=.161	SENS_Z=.294
+
+Using compass 2:
+Door:	x 11xx-12xx
+	y 14xx
+	z -2xx (-3xx)
+radio:	x 12xx 13xx
+	y (11xx) 12xx
+	z -2xx -3xx
+locker:	x 10xx 11xx
+	y 10xx 11xx
+freetb:	x 9xx
+	y 13xx
+	
+range: 900-1500?
+
+inbuf[1]	uint8_t	4 '\004'	100
+inbuf[2]	uint8_t	245 'õ'		11110101
+inbuf[3]	uint8_t	4 '\004'	100
+inbuf[4]	uint8_t	214 'Ö'		11010110
+inbuf[5]	uint8_t	254 'þ'		11111110
+inbuf[6]	uint8_t	194 'Â'		11000010
+x: 00000100 11110101
+y: 00000100 11010110
+z: 11111110 11000010
+1269 1238 -318?
+
+
+according to phone:	N: x=0, Y=45uT	atan(45/0.1)=90
+			E: x=-40, y=1	atan(1/-40)=-1
+			S: x=0, y=-30	atan(30/1)=-88
+			

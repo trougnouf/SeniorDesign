@@ -35,6 +35,8 @@
 #include "cmsis_os.h"
 
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
+#include <math.h>
 // disable optimizations
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
@@ -43,6 +45,8 @@
 #define COMP_CS_P GPIOA
 #define COMP_INT GPIO_PIN_1
 #define COMP_INT_P GPIOA
+
+#define COMP_RR	1
 
 /* USER CODE END Includes */
 
@@ -202,7 +206,7 @@ void MX_USART2_UART_Init(void)
 
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 38400;
-  huart2.Init.WordLength = UART_WORDLENGTH_7B;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
   huart2.Init.Mode = UART_MODE_TX_RX;
@@ -273,18 +277,165 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-/*
-HAL_StatusTypeDef SPI_IO(char *receiveBuffer, char * sendBuffer, int sendMessageLength, int receiveMessageLength)
+
+
+
+
+// Useful debugging info
+void dbg_uartout(uint8_t * inBuf, uint8_t * outBuf, uint8_t * msg)
 {
-	char* tempSendBuffer = sendBuffer;
-	char* tempReceiveBuffer = receiveBuffer;
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	for(uint8_t i = 0; i<sendMessageLength; i++)
+	if(outBuf[0] == 62)	// SSMM
 	{
-		HAL_SPI_Transmit(hspi1, *tempSendBuffer, 1, 1000);
+		msg = "SMM:\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	else if(outBuf[0] == 78)	// RM
+	{
+		msg = "RM:\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	else if(outBuf[0] == 240)	// RST
+	{
+		msg = "RST:\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	else if(outBuf[0] == 80)	// RR
+	{
+		msg = "RR:\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	if(inBuf[0] & 128)	msg = "BM\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 64)	msg = "WC\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 32)	msg = "SM\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 16)	msg = "ER\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 8)	msg = "SD\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 4)	msg = "RS\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 2)	msg = "D1\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(inBuf[0] & 1)	msg = "D0\t";
+	else				msg = "  \t";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	if(HAL_GPIO_ReadPin(COMP_INT_P, COMP_INT))
+	{
+		msg = "RDY\t";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	}
+	msg = "\n\n\r";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+}
+
+// I/O
+void send_SPI(uint8_t * inBuf, uint8_t inLength, uint8_t * outBuf, uint8_t outLength)
+{
+	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
+	HAL_SPI_Transmit(&hspi1, outBuf, outLength, 1000);
+	HAL_SPI_Receive(&hspi1, inBuf, inLength, 1000);
+	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
+}
+
+// Print results as integers
+void compass_uart(int16_t * xyz, uint8_t * msg, int16_t * angle)
+{
+	sprintf(msg, "x: %5d\t", xyz[0]);
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	sprintf(msg, "y: %5d\t", xyz[1]);
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	sprintf(msg, "z: %5d\t", xyz[2]);
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	sprintf(msg, "a: %d\t", *angle);
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	msg = "\n\r";
+	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+}
+
+// Convert raw input bits to integers
+void processInput(uint8_t * inbuf, int16_t * xyz, int16_t * minmaxxyz)
+{
+	// FL is off by 2 degrees W: Don't care.
+	for(uint8_t i=0; i<3; i++)
+	{
+		// 2's complement binaries to int16_t
+		xyz[i] = ((int16_t)inbuf[i*2+1] << 8 | inbuf[i*2+2]);
+		// (optional) use GAIN_SEL to find "real" value
+		xyz[i] *= i==2?.294:.161;
+		// Update minmaxxyz
+		if(xyz[i] < minmaxxyz[2*i])	minmaxxyz[2*i] = xyz[i];
+		if(xyz[i] > minmaxxyz[2*i+1])	minmaxxyz[2*i+1] = xyz[i];
+		// Normalize results
+		xyz[i] -= (minmaxxyz[2*i+1]+minmaxxyz[2*i])/2;
 	}
 }
-*/
+
+/*
+ * Calibration: Do a bunch of measurements
+ *
+ * Measurements/normalization: Save min and max. Med = 0
+ */
+
+void calibrate(uint8_t * inbuf, uint8_t * outbuf, int16_t * xyz, int16_t * minmaxxyz)
+{
+	takemeasurement(inbuf, outbuf);
+	for(uint8_t i=0; i<3; i++)
+	{
+		// 2's complement binaries to int16_t
+		xyz[i] = ((int16_t)inbuf[i*2+1] << 8 | inbuf[i*2+2]);
+		// (optional) use GAIN_SEL to find "real" value
+		xyz[i] *= i==2?.294:.161;
+		// Update minmaxxyz
+		minmaxxyz[2*i] = xyz[i];
+		minmaxxyz[2*1+1] = xyz[i];
+	}
+	for(uint16_t i=0; i<100; i++)	// TODO replace this with pushbutton
+	{
+		takemeasurement(inbuf, outbuf);
+		processInput(inbuf, xyz, minmaxxyz);
+		osDelay(100);
+	}
+}
+
+void takemeasurement(uint8_t * inbuf, uint8_t * outbuf)
+{
+	  // Start single measurement mode
+	  outbuf[0] = 62;	// 0011zyxt
+	  send_SPI(inbuf, 1, outbuf, 1);
+	  //dbg_uartout(inbuf, outbuf, msg);
+
+	  while(!HAL_GPIO_ReadPin(COMP_INT_P, COMP_INT));
+
+	  //Read measurement
+	  outbuf[0] = 78;
+	  send_SPI(inbuf, 7, outbuf, 1);
+	  //dbg_uartout(inbuf, outbuf, msg);
+}
+
+void getAngle(int16_t * angle, int16_t * xyz)
+{
+	volatile double tmp = atan((double)xyz[0]/(double)xyz[1]);
+	tmp *= (180/3.1428);
+	tmp = 90 - tmp;
+	if(xyz[1] > 0)	*angle = (int16_t)(90.0 - (atan((double)xyz[0]/(double)xyz[1]) * (180.0 / 3.1428)));
+	else if(xyz[1] < 0)	*angle = (int16_t)(270.0 - (atan((double)xyz[0]/(double)xyz[1]) * (180.0 / 3.1428)));
+	else if(xyz[0]<0)	*angle = 180;
+	else	*angle = 0;
+}
+
+// Calibration
+/* Find the min and max value
+ * Normalize values so that med=0
+ */
 
 /* USER CODE END 4 */
 
@@ -293,45 +444,38 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-	uint8_t cmdByte;
-	uint8_t stByte;
-	uint8_t compin[7];
+	uint8_t inbuf[7];
+	uint8_t outbuf[2];
+	int16_t xyz[3];
+	int16_t minmaxxyz[6];	// xmin xmax ymin ymax zmin zmax
+	int16_t angle;
+	uint8_t * msg = malloc(10);
 
 	// Reset: 11110000 = 0xf0
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	cmdByte = 0xf0;
-	HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	HAL_SPI_Receive(&hspi1, &stByte, 1, 1000);
-	HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	osDelay(1);
+	outbuf[0] = 0xf0;
+	send_SPI(inbuf, 1, outbuf, 1);
+	dbg_uartout(inbuf, outbuf, msg);
 
-	// read register
+	calibrate(inbuf, outbuf, xyz, minmaxxyz);
+
+	/*
+	// Read register 0
+	outbuf[0] = 80;
+	outbuf[1] = 0 << 2;
+	send_SPI(inbuf, 3, outbuf, 2);
+	dbg_uartout(inbuf, outbuf, msg);
+	*/
+
 
   /* Infinite loop */
 
   for(;;)
   {
-
-
-	  // Single measurement mode:
-	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	  cmdByte = (0x30)|0xe;
-	  HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	  HAL_SPI_Receive(&hspi1, &stByte, 1, 1000);
-	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	  //osDelay(1);
-
-	  // Wait for interrupt
-	  while(!HAL_GPIO_ReadPin(COMP_INT_P, COMP_INT));
-
-	  // Read measurement: 01001111 = 0x4F
-	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_RESET);
-	  cmdByte = 0x4f;
-	  HAL_SPI_Transmit(&hspi1, &cmdByte, 1, 1000);
-	  HAL_SPI_Receive(&hspi1, &compin, 7, 1000);
-	  HAL_GPIO_WritePin(COMP_CS_P, COMP_CS, GPIO_PIN_SET);
-	  osDelay(1);
-
+	  takemeasurement(inbuf, outbuf);
+	  processInput(inbuf, xyz, minmaxxyz);
+	  getAngle(&angle, xyz);
+	  compass_uart(xyz, msg, &angle);
+	  osDelay(100);	// replace w/sleep
   }
 #pragma GCC pop_options
   /* USER CODE END 5 */ 
