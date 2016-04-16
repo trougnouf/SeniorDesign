@@ -29,7 +29,6 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:stm32
 LIBS:generic
 LIBS:diodesinc
 LIBS:components

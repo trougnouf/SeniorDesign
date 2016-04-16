@@ -1,0 +1,26 @@
+Jumpers:
+P5 3VEN-BATT
+JP2 3VOUT-VCC
+JP1 5VOUT-+5V
+
+1. Check resistance between VCC and GND
+2. Test battery voltage w/all jumpers out
+3. Insert battery, connect USB, check VBAT and I_BAT
+4. disconnect USB, connect P5
+5. connect 3.3V jumper and check 3.3V
+
+hw
+
+...
+
+program: add 5v jumper and test
+
+108kohm between battery terminals
+0.38kohm between vcc and gnd
+3.66v originally
+took off usb and there is now 9kohm between vcc and gnd
+w/p5 resistance between vcc and gnd is now 15-40+ kohm, increasing
+
+v=ir -> i=v/r=3.7/20000=0.000185A
+
+3.3/380=0.009
