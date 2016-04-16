@@ -1,0 +1,28 @@
+Microcontroller
+(intro)
+We chose the STMicroelectronics STM32 F7 microcontroller because it is the most affordable of only two Cortex-M7 microcontrollers available at the time of our research.
+(perf)
+The Cortex-M7 series can run at speeds of up to 300 MHz. The current STM32 F7 has a clock speed of 216 MHz, it contains an FPU and can interface with external SDRAM memory. This allows it to bridge the performance gap between microcontrollers and microprocessors, allowing us in theory to perform computer vision on a microcontroller.
+(dev)
+The STM32 series MCUs can be programmed with a $20 STLinkV2 in-circuit debugger/programmer, and development boards cost range from $10 to $50. All development can be performed using free and open-source software, specifically the GCC compiler, GDB debugger, and OpenOCD on-chip debugger. These software are all prepackaged by STMicroelectronics in a ready-to-use Eclipse plugin called OpenSTM32.
+(alt)
+SDRAM and flash were not incorporated into the final design, therefore SenseWalk 2 is physically incompatible with voice recognition and computer vision. A simpler alternative board, Sensewalk 9000, was created with a lower-performance microcontroller, the ultra-low-power 80MHz STMicroelectronics STM32 L4. SenseWalk 9000 runs off a replaceable 18650 battery and charges from a standard micro-USB port.
+
+
+
+Audio decoder
+
+Information is transmited to the user through a Bluetooth headset. To achieve this, an audio file stored on the SD card is read by the microcontroller, the compressed audio is transfered to a hardware MP3 decoder, which then sends a raw audio waveform to the bluetooth module. 
+
+The STMicroelectronics STA013 MPEG 2.5 audio decoder was chosen because it is widely available, well-documented, and comes in an easy to prototype 28-SO package. The STA013 uses I2C to communicate with the microcontroller, SPI to receive compressed audio files, and I2S to send out decompressed audio.
+
+Alternatively, the Sensewalk 9000 features a series of jumpers which can be used to switch between using an external hardware decoder, or processing the audio in software and sending it directly from the microcontroller to the Bluetooth module. Generating an I2S signal on the microcontroller involves more complicated software, but it comes with a significant cost-benefit (~$12). The power implication of doing software audio decoding requires testing to be known. The microcontroller would use more power while performing such heavy computations, but the processing cost may be lower than that added by an external ASIC. 
+
+
+Filesystem
+
+The filesystem is used by all subsystems. The GPS first reads all directions from a text-file which is then saved in memory. Both the laser and the GPS read compressed sound files that are then sent to the user as audio feedback.
+
+All information is stored on a Micro-SD card using the Fat32 file-system which allows for easy modification from most computers. The open-source FatFs driver is used along with an SDIO physical interface (1-bit wide on SW2, 4-bit bus on SW9000). 
+
+

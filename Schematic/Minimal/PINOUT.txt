@@ -3,7 +3,7 @@ Datash:	http://www.st.com/web/jp/resource/technical/document/datasheet/DM0010883
 Notes:	Programming headers: See Table 8.1.1.1 in the paper
 	Also needs one UART (two pin headers) for debugging
 	// using the same UART as dev board: PA9 PB7 USART1)
-Pinout:	{PB3, PA14, PA13, PC13,NRST}debugging, {PA2, PA3}USART2 (all female headers), {PC14, PC15, PH0, PH1, PA8, PA10, PA11, PA12}buttons/input
+Pinout:	{PB3, PA14, PA13, PC13,NRST}debugging, {PA2, PA3}USART2 (all female headers), {PC14, PC15, PH0, PH1, PA8, PA10, PA11, PA12}buttons/input, PB8 LED
 
 
 Laser:		lightware SF10/A
