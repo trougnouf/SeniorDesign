@@ -77,3 +77,5 @@ void heartbeatThread(void const *argument)
 		osDelay(10); // delay if necessary
 	}
 }
+
+

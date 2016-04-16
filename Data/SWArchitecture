@@ -1,0 +1,21 @@
+Almighty handler:
+
+
+Compass handler:	data: angle
+	initialize and sleep() before for(;;) loop
+	for(;;):
+		get the measurement
+		wake GPS up
+		sleep	
+
+GPS thread handler:	data: angle, audio
+	
+		wake compass up
+		sleep
+
+Bluetooth handler:
+	
+		for(;;):
+		
+
+Laser handler:		data: contaudio
