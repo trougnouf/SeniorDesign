@@ -37,8 +37,7 @@ uint8_t retSD;    /* Return value for SD */
 char SD_Path[4];  /* SD logical drive path */
 
 /* USER CODE BEGIN Variables */
-FATFS SDFatFS;
-FIL hello;
+
 /* USER CODE END Variables */    
 
 void MX_FATFS_Init(void) 
@@ -48,28 +47,7 @@ void MX_FATFS_Init(void)
 
   /* USER CODE BEGIN Init */
   /* additional user code for init */     
-  if(!retSD)
-  {
-	  if(f_mount(&SDFatFS, (TCHAR const*)SD_Path, 0) != FR_OK)
-		  ;//strToUART("mount failure\n");
-	  else
-	  {
-		  //strToUART("mount success\n");
-		  if(f_open(&hello, "hello.txt", FA_READ) == FR_OK)
-		  {
-			  //strToUART("opened hello.txt\n");
-			  volatile char * str;
-			  //int readcount;
-			  TCHAR * buffer[10];
-			  str = f_gets((char*)buffer, hello.fsize, &hello);
-			  //strToUART(str);
-			  f_close(&hello);
-		  }
-		  else	
-                    ;//strToUART("could not open hello.txt\n");
 
-	  }
-  }
   /* USER CODE END Init */
 }
 

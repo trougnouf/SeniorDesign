@@ -136,14 +136,10 @@ void HAL_SD_MspInit(SD_HandleTypeDef* hsd)
   
     /**SDMMC1 GPIO Configuration    
     PC8     ------> SDMMC1_D0
-    PC9     ------> SDMMC1_D1
-    PC10     ------> SDMMC1_D2
-    PC11     ------> SDMMC1_D3
     PC12     ------> SDMMC1_CK
     PD2     ------> SDMMC1_CMD 
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11 
-                          |GPIO_PIN_12;
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_12;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -177,14 +173,10 @@ void HAL_SD_MspDeInit(SD_HandleTypeDef* hsd)
   
     /**SDMMC1 GPIO Configuration    
     PC8     ------> SDMMC1_D0
-    PC9     ------> SDMMC1_D1
-    PC10     ------> SDMMC1_D2
-    PC11     ------> SDMMC1_D3
     PC12     ------> SDMMC1_CK
     PD2     ------> SDMMC1_CMD 
     */
-    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11 
-                          |GPIO_PIN_12);
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_8|GPIO_PIN_12);
 
     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_2);
 
@@ -233,8 +225,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     /**SPI2 GPIO Configuration    
     PC2     ------> SPI2_MISO
     PB10     ------> SPI2_SCK
-    PB15     ------> SPI2_MOSI
-    PB9     ------> SPI2_NSS 
+    PB15     ------> SPI2_MOSI 
     */
     GPIO_InitStruct.Pin = SPI2_MISO_Compass_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -243,7 +234,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
     HAL_GPIO_Init(SPI2_MISO_Compass_GPIO_Port, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = SPI2_SCK_Compass_Pin|SPI2_MOSI_Compass_Pin|SPI2_CS_Compass_Pin;
+    GPIO_InitStruct.Pin = SPI2_SCK_Compass_Pin|SPI2_MOSI_Compass_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -289,12 +280,11 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
     /**SPI2 GPIO Configuration    
     PC2     ------> SPI2_MISO
     PB10     ------> SPI2_SCK
-    PB15     ------> SPI2_MOSI
-    PB9     ------> SPI2_NSS 
+    PB15     ------> SPI2_MOSI 
     */
     HAL_GPIO_DeInit(SPI2_MISO_Compass_GPIO_Port, SPI2_MISO_Compass_Pin);
 
-    HAL_GPIO_DeInit(GPIOB, SPI2_SCK_Compass_Pin|SPI2_MOSI_Compass_Pin|SPI2_CS_Compass_Pin);
+    HAL_GPIO_DeInit(GPIOB, SPI2_SCK_Compass_Pin|SPI2_MOSI_Compass_Pin);
 
   /* USER CODE BEGIN SPI2_MspDeInit 1 */
 
