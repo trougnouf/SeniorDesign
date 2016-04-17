@@ -138,7 +138,7 @@ int main(void)
   osThreadDef(laserTask, StartLaserTask, osPriorityNormal, 0, 128);
   laserTaskHandle = osThreadCreate(osThread(laserTask), NULL);
   
-  osThreadDef(compassTask, StartCompassTask, osPriorityBelowNormal, 0, 128);
+  osThreadDef(compassTask, StartCompassTask, osPriorityNormal, 0, 128);
   compassTaskHandle = osThreadCreate(osThread(compassTask), NULL);
   
   osThreadDef(vibratorTask, StartVibratorTask, osPriorityNormal, 0, 64);
@@ -349,19 +349,7 @@ void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-// Interrupts
 
-void EXTI0_IRQHandler(void)
-{
-  if(EXTI_GetITStatus(EXTI0_IRQn) != RESET)
-  {
-    osThreadSuspend(laserTaskHandle);
-    osThreadSuspend(vibratorTaskHandle);
-    HAL_GPIO_WritePin(VIBRATOR_GPIO_Port, VIBRATOR_Pin, GPIO_PIN_RESET);
-    osThreadResume(compassTaskHandle);
-  }
-  EXTI_ClearITPendingBit(EXTI0_IRQn);
-}
 
 // Functions
 // Useful debugging info
