@@ -14,7 +14,7 @@ LeaveTargetRunning=_ 0
 stlinkserialNo=668EF6E4
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=-1603755343
+Checksum=1430185319
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -105,8 +105,7 @@ ShowTiming=1
 mode=0
 [Breakpoints2]
 Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Inc\mxconstants.h}.83.1" 0 0 1 "" 0 "" 0
-Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.775.3" 0 0 1 "" 0 "" 0
-Count=2
+Count=1
 [Aliases]
 Count=0
 SuppressDialog=0

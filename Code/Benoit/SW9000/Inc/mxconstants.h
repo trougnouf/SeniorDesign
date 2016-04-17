@@ -38,10 +38,6 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define I2C3_SCL_Codec_Pin GPIO_PIN_0
-#define I2C3_SCL_Codec_GPIO_Port GPIOC
-#define I2C3_SDA_Codec_Pin GPIO_PIN_1
-#define I2C3_SDA_Codec_GPIO_Port GPIOC
 #define SPI2_MISO_Compass_Pin GPIO_PIN_2
 #define SPI2_MISO_Compass_GPIO_Port GPIOC
 #define UART4_TX_Laser_Pin GPIO_PIN_0
@@ -52,44 +48,18 @@
 #define USART2_TX_PC_GPIO_Port GPIOA
 #define USART2_RX_PC_Pin GPIO_PIN_3
 #define USART2_RX_PC_GPIO_Port GPIOA
-#define SPI1_SCK_Codec_Pin GPIO_PIN_5
-#define SPI1_SCK_Codec_GPIO_Port GPIOA
-#define USART3_CTS_BT_Pin GPIO_PIN_6
-#define USART3_CTS_BT_GPIO_Port GPIOA
-#define SPI1_MOSI_Codec_Pin GPIO_PIN_7
-#define SPI1_MOSI_Codec_GPIO_Port GPIOA
-#define USART3_TX_BT_Pin GPIO_PIN_4
-#define USART3_TX_BT_GPIO_Port GPIOC
-#define USART3_RX_BT_Pin GPIO_PIN_5
-#define USART3_RX_BT_GPIO_Port GPIOC
 #define VIBRATOR_Pin GPIO_PIN_0
 #define VIBRATOR_GPIO_Port GPIOB
-#define USART3_RTS_BT_Pin GPIO_PIN_1
-#define USART3_RTS_BT_GPIO_Port GPIOB
-#define BT_GP2_Pin GPIO_PIN_2
-#define BT_GP2_GPIO_Port GPIOB
 #define SPI2_SCK_Compass_Pin GPIO_PIN_10
 #define SPI2_SCK_Compass_GPIO_Port GPIOB
-#define BT_GP9_Pin GPIO_PIN_11
-#define BT_GP9_GPIO_Port GPIOB
 #define COMP_INT_Pin GPIO_PIN_12
 #define COMP_INT_GPIO_Port GPIOB
 #define INT2_Compass_Pin GPIO_PIN_13
 #define INT2_Compass_GPIO_Port GPIOB
-#define RST_Codec_Pin GPIO_PIN_14
-#define RST_Codec_GPIO_Port GPIOB
 #define SPI2_MOSI_Compass_Pin GPIO_PIN_15
 #define SPI2_MOSI_Compass_GPIO_Port GPIOB
-#define Codec_DR_Pin GPIO_PIN_6
-#define Codec_DR_GPIO_Port GPIOC
 #define FIVEVOLTSEN_Pin GPIO_PIN_7
 #define FIVEVOLTSEN_GPIO_Port GPIOC
-#define USART1_TX_GPS_Pin GPIO_PIN_9
-#define USART1_TX_GPS_GPIO_Port GPIOA
-#define SDMMC1_Detect_Pin GPIO_PIN_15
-#define SDMMC1_Detect_GPIO_Port GPIOA
-#define USART1_RX_GPS_Pin GPIO_PIN_7
-#define USART1_RX_GPS_GPIO_Port GPIOB
 #define LED_Pin GPIO_PIN_8
 #define LED_GPIO_Port GPIOB
 #define COMP_CS_Pin GPIO_PIN_9

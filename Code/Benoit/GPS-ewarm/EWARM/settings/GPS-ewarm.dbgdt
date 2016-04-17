@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-<Workspace>
-  <ConfigDictionary>
-    <CurrentConfigs>
-      <Project>GPS-ewarm/GPS-ewarm</Project>
-    </CurrentConfigs>
-  </ConfigDictionary>
+<Project>
   <Desktop>
     <Static>
+      <Debug-Log>
+        <ColumnWidth0>20</ColumnWidth0>
+        <ColumnWidth1>1051</ColumnWidth1>
+      </Debug-Log>
+      <Build>
+        <ColumnWidth0>20</ColumnWidth0>
+        <ColumnWidth1>788</ColumnWidth1>
+        <ColumnWidth2>210</ColumnWidth2>
+        <ColumnWidth3>52</ColumnWidth3>
+      </Build>
       <Workspace>
         <ColumnWidths>
           <Column0>124</Column0>
@@ -16,19 +21,56 @@
           <Column3>27</Column3>
         </ColumnWidths>
       </Workspace>
-      <Build>
-        <ColumnWidth0>20</ColumnWidth0>
-        <ColumnWidth1>788</ColumnWidth1>
-        <ColumnWidth2>210</ColumnWidth2>
-        <ColumnWidth3>52</ColumnWidth3>
-      </Build>
-      <TerminalIO/>
+      <Disassembly>
+        <col-names>
+          <item>Disassembly</item>
+          <item>_I0</item>
+        </col-names>
+        <col-widths>
+          <item>500</item>
+          <item>20</item>
+        </col-widths>
+        <DisasmHistory/>
+        <ShowCodeCoverage>1</ShowCodeCoverage>
+        <ShowInstrProfiling>1</ShowInstrProfiling>
+      </Disassembly>
+      <Locals>
+        <col-names>
+          <item>Location</item>
+          <item>Type</item>
+          <item>Value</item>
+          <item>Variable</item>
+        </col-names>
+        <col-widths>
+          <item>150</item>
+          <item>100</item>
+          <item>100</item>
+          <item>100</item>
+        </col-widths>
+      </Locals>
     </Static>
     <Windows>
       <Wnd0>
         <Tabs>
           <Tab>
-            <Identity>TabID-32243-20952</Identity>
+            <Identity>TabID-27204-22275</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
+          <Tab>
+            <Identity>TabID-26681-22284</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        <SelectedTab>0</SelectedTab>
+      </Wnd0>
+      <Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-5184-22278</Identity>
             <TabName>Workspace</TabName>
             <Factory>Workspace</Factory>
             <Session>
@@ -41,18 +83,28 @@
           </Tab>
         </Tabs>
         <SelectedTab>0</SelectedTab>
-      </Wnd0>
-      <Wnd1>
+      </Wnd3>
+      <Wnd4>
         <Tabs>
           <Tab>
-            <Identity>TabID-22729-22154</Identity>
-            <TabName>Build</TabName>
-            <Factory>Build</Factory>
+            <Identity>TabID-15933-22281</Identity>
+            <TabName>Disassembly</TabName>
+            <Factory>Disassembly</Factory>
             <Session/>
           </Tab>
         </Tabs>
         <SelectedTab>0</SelectedTab>
-      </Wnd1>
+      </Wnd4>
+      <Wnd5>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-1672-25005</Identity>
+            <TabName>Locals</TabName>
+            <Factory>Locals</Factory>
+          </Tab>
+        </Tabs>
+        <SelectedTab>0</SelectedTab>
+      </Wnd5>
     </Windows>
     <Editor>
       <Pane>
@@ -125,17 +177,21 @@
           </Sizes>
         </Row0>
         <Row1>
-          <Sizes/>
+          <Sizes>
+            <Toolbar-1614F448>
+              <key>debuggergui.enu1</key>
+            </Toolbar-1614F448>
+          </Sizes>
         </Row1>
       </Top>
       <Left>
         <Row0>
           <Sizes>
-            <Wnd0>
+            <Wnd3>
               <Rect>
                 <Top>-2</Top>
                 <Left>-2</Left>
-                <Bottom>672</Bottom>
+                <Bottom>648</Bottom>
                 <Right>198</Right>
                 <x>-2</x>
                 <y>-2</y>
@@ -144,21 +200,58 @@
                 <sizeHorzCX>180180</sizeHorzCX>
                 <sizeHorzCY>218579</sizeHorzCY>
                 <sizeVertCX>180180</sizeVertCX>
-                <sizeVertCY>736612</sizeVertCY>
+                <sizeVertCY>710383</sizeVertCY>
               </Rect>
-            </Wnd0>
+            </Wnd3>
           </Sizes>
         </Row0>
       </Left>
       <Right>
         <Row0>
-          <Sizes/>
+          <Sizes>
+            <Wnd4>
+              <Rect>
+                <Top>-2</Top>
+                <Left>-2</Left>
+                <Bottom>648</Bottom>
+                <Right>192</Right>
+                <x>-2</x>
+                <y>-2</y>
+                <xscreen>200</xscreen>
+                <yscreen>200</yscreen>
+                <sizeHorzCX>180180</sizeHorzCX>
+                <sizeHorzCY>218579</sizeHorzCY>
+                <sizeVertCX>174775</sizeVertCX>
+                <sizeVertCY>710383</sizeVertCY>
+              </Rect>
+            </Wnd4>
+          </Sizes>
         </Row0>
+        <Row1>
+          <Sizes>
+            <Wnd5>
+              <Rect>
+                <Top>-2</Top>
+                <Left>190</Left>
+                <Bottom>648</Bottom>
+                <Right>390</Right>
+                <x>190</x>
+                <y>-2</y>
+                <xscreen>200</xscreen>
+                <yscreen>200</yscreen>
+                <sizeHorzCX>180180</sizeHorzCX>
+                <sizeHorzCY>218579</sizeHorzCY>
+                <sizeVertCX>180180</sizeVertCX>
+                <sizeVertCY>710383</sizeVertCY>
+              </Rect>
+            </Wnd5>
+          </Sizes>
+        </Row1>
       </Right>
       <Bottom>
         <Row0>
           <Sizes>
-            <Wnd1>
+            <Wnd0>
               <Rect>
                 <Top>-2</Top>
                 <Left>-2</Left>
@@ -173,7 +266,7 @@
                 <sizeVertCX>180180</sizeVertCX>
                 <sizeVertCY>218579</sizeVertCY>
               </Rect>
-            </Wnd1>
+            </Wnd0>
           </Sizes>
         </Row0>
       </Bottom>
@@ -182,6 +275,6 @@
       </Float>
     </Positions>
   </Desktop>
-</Workspace>
+</Project>
 
 
