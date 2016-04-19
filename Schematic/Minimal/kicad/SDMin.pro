@@ -1,4 +1,4 @@
-update=Fri 19 Feb 2016 03:19:59 PM EST
+update=Tue 19 Apr 2016 01:05:44 PM EST
 version=1
 last_client=kicad
 [pcbnew]
@@ -66,3 +66,13 @@ LibName34=/orb/Dev/SeniorDesign/Schematic/components
 LibName35=Resource/st-microelectronics
 LibName36=/home/trougnouf/Dev/SeniorDesign/Schematic/components
 LibName37=/home/trougnouf/Dev/kicad-library/library/sensors
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60

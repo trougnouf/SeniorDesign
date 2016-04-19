@@ -1,0 +1,182 @@
+MCU
+IDE
+
+cost for one: 
+MCU: 
+
+-----
+
+
+goals and objective
+dist of workload
+Design constraints
+
+Ross:
+Solar cell, battery: $35.85
+PCB and components: 200
+
+Benoit:
+Development boards: $121.98
+Sensewalk 9000 PCB: 95.74
+Batteries and chargers: 36
+Image sensor	$25.58
+Debugger/programmer: $24.51
+Passive components: 17.75
+Bluetooth module: 17.2
+Breakout adapters: 16.87
+Microcontrollers: 15.76
+Soldering consumables: 14.89
+Power subsystem: 12.45
+Magnetometers: 8.05
+Vibrator: 4.64
+LEDs: 1.86
+
+Total: 413.28
+
+
+
+
+
+Diego:
+GPS:	$70.37
+Development board: $40
+
+Total: 110.37
+
+Chad:
+Microcontrollers: 28.47
+Breadboard, wires: 11.37
+Debugger (UART): 3.2
+
+Total: 43.04
+
+Boeing funding:
+Laser: 286.15
+Bluetooth breakout boards: 89.9
+Decoders: 58.35
+Bluetooth module: 45.64
+Memory: 45.51
+Passive components: 40.47
+Microcontroller: 37.96
+MEMS microphone / breakout: 27.8
+Compasses: 25.02
+Dev boards: 21.98
+MicroSD sockets: 20.36
+Magnetometer: 18.56
+Vibrators: 12
+Misc: 10.5
+
+Total: 740.2
+
+
+
+-----------------------
+
+Cost (raw)
+
+Ross:
+Solar cell, battery: $35.85
+PCB and components: 200
+
+Benoit:
+Development boards: $110.99+10.99
+Debugger/programmer: $22.61+1.9
+Image sensor	$25.58
+Breakout adapters: 10.9+1.99+3.98
+Microcontrollers: 5.07+10.69
+Passive components: 9.89+3.24+2.22
+Sensewalk 9000 PCB: 95.74
+Magnetometers (3): 6.42+2.08
+Power subsystem: 5.11+5.1+2.24
+Flux: 13.35
+Desoldering wick: 1.54
+LEDs: 1.86
+Battery holder: 2.4
+Bluetooth module: 17.2
+Vibrator: 4.64
+Batteries and chargers: 36
+
+
+
+Diego:
+Development board: $40
+GPS:	$70.37
+
+Chad:
+Breadboard, wires: 11.37
+Microcontrollers: 28.47
+Debugger (UART): 3.2
+
+Boeing funding:
+Laser: 286.15
+Bluetooth breakout boards: 89.9
+Bluetooth module: 25+20.64
+MEMS microphone / breakout: 27.8
+Compasses: 25.02
+Breakout adapters: 4.95
+Passive components: 19.78+.66+8.73+1.14+10.16
+LEDs: 1.44+.72
+Decoders: 35.01+11.67+11.67
+Dev boards: 21.98
+Memory: 35.01+5.37+5.13
+MicroSD sockets: 8.91+8.65+2.8
+Magnetometer: 12.32+6.24
+Power subsystem: 3.39
+Microcontroller: 37.96
+Vibrators: 12
+
+------------------------
+
+Magnetometer:
+
+A magnetometer is used to provide the user with a compass function, and to assist the GPS in directing the user.
+
+We chose the Melexis MLX90393 Triaxis Magnetometer, which measures the magnetic field magnetic field in the X, Y, and Z direction using the Hall Effect. It returns three µT (micro Tesla) values.
+
+Hardware:	The MLX90393 comes in a 16-pads QFN package. (0.5mm pitch)
+Interface:	SPI with precise timing requirements
+Software:	Remember each axis' min and max value for calibration
+Fun fact:	The MLX90393 is made in Belgium
+
+
+------------------------
+
+goals and objectives:
+
+Create a device which helps the visually impaired navigate life
+
+Warn user of obstacles ahead of time
+Provide navigation assistance
+Audio input/output
+Long battery life
+
+
+---------------------
+Final distribution of workload
+
+Ross:
+
+Power (solar panel & lithium battery integration)
+Schematic design (SW2)
+PCB design (SW2)
+
+Chad:
+
+Bluetooth audio output
+
+Benoit:
+
+Hardware components selection
+Laser detection
+Magnetometer
+SD card / filesystem
+Schematic design (SW9000)
+PCB design (SW9000)
+PCB bringup
+Software integration
+
+Diego:
+
+GPS
+
+
