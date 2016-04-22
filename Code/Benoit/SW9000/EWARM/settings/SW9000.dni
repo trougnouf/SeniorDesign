@@ -14,7 +14,7 @@ LeaveTargetRunning=_ 0
 stlinkserialNo=668EF6E4
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=1430185319
+Checksum=-1676825120
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -26,11 +26,11 @@ ShowArgs=0
 MixedMode=1
 [SWOTraceHWSettings]
 OverrideDefaultClocks=0
-CpuClock=80000000
+CpuClock=16000000
 ClockAutoDetect=0
 ClockWanted=2000000
 JtagSpeed=2000000
-Prescaler=40
+Prescaler=8
 TimeStampPrescIndex=0
 TimeStampPrescData=0
 PcSampCYCTAP=1

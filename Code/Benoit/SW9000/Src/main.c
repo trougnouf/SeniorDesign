@@ -54,10 +54,11 @@ osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-osThreadId fsTaskHandle;
+//osThreadId fsTaskHandle;
 osThreadId laserTaskHandle;
 osThreadId compassTaskHandle;
 osThreadId vibratorTaskHandle;
+osThreadId testTaskHandle;
 
 volatile uint8_t vibrationLv;
 uint8_t debugging;
@@ -73,15 +74,41 @@ void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-void StartFSTask(void const * argument);
+//void StartFSTask(void const * argument);
 void StartLaserTask(void const * argument);
 void StartCompassTask(void const * argument);
 void StartVibratorTask(void const * argument);
+void StartTestTask(void const * argument);
 
 void compass_takemeasurement(uint8_t * inbuf, uint8_t * outbuf);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+void HAL_GPIO_EXTI_Callback (uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin == GPIO_PIN_0)
+{
+  HAL_GPIO_WritePin(VIBRATOR_GPIO_Port, VIBRATOR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
+  HAL_Delay(100);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+  HAL_Delay(100);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
+  HAL_Delay(100);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+  HAL_Delay(100);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
+  HAL_Delay(100);
+  osThreadResume(compassTaskHandle);
+  //osThreadSuspend(laserTaskHandle);
+  //osThreadSuspend(vibratorTaskHandle);
+  //HAL_GPIO_WritePin(VIBRATOR_GPIO_Port, VIBRATOR_Pin, GPIO_PIN_RESET);
+  
+  //HAL_Delay(100);
+  
+  //osThreadResume(testTaskHandle);
+    }
+}
 
 /* USER CODE END 0 */
 
@@ -127,7 +154,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 256);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -143,6 +170,9 @@ int main(void)
   
   osThreadDef(vibratorTask, StartVibratorTask, osPriorityNormal, 0, 64);
   vibratorTaskHandle = osThreadCreate(osThread(vibratorTask), NULL);
+  
+  osThreadDef(testTask, StartTestTask, osPriorityNormal, 0, 64);
+  testTaskHandle = osThreadCreate(osThread(testTask), NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
@@ -507,10 +537,11 @@ void compass_getAngle(int16_t * angle, int16_t * xyz)
 void compass_vibrateAngle(int16_t * angle)
 {
   uint8_t clockangle = *angle/30;
-  uint8_t i;
+  uint16_t i;
+  osDelay(500);
   for(;clockangle > 0; clockangle--)
   {
-    for(i=255; i>0; i--)
+    for(i=35535; i>0; i--)
     {
       HAL_GPIO_WritePin(VIBRATOR_GPIO_Port, VIBRATOR_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(VIBRATOR_GPIO_Port, VIBRATOR_Pin, GPIO_PIN_SET);
@@ -523,11 +554,36 @@ void compass_vibrateAngle(int16_t * angle)
       HAL_GPIO_WritePin(VIBRATOR_GPIO_Port, VIBRATOR_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(VIBRATOR_GPIO_Port, VIBRATOR_Pin, GPIO_PIN_RESET);
     }
-    osDelay(250);
+    osDelay(300);
   }
+  osDelay(1000);
 }
 
 // Threads
+
+void StartTestTask(void const * argument)
+{
+  uint8_t i;
+  osThreadSuspend(testTaskHandle);
+  
+  osThreadSuspend(laserTaskHandle);
+  osDelay(100);
+  osThreadResume(laserTaskHandle);
+  osThreadSuspend(testTaskHandle);
+  for(;;)
+  {
+    osThreadSuspend(laserTaskHandle);
+    for(i=10; i>0; i--)
+    {
+    	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+    	osDelay(50);
+    	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+    	osDelay(50);
+    }
+    osThreadResume(laserTaskHandle);
+    osThreadSuspend(testTaskHandle);
+  }
+}
 
 void StartVibratorTask(void const * argument)
 {
@@ -556,6 +612,7 @@ void StartFSTask(void const * argument)
 {
   for(;;)
   {
+
   }
 }
 
@@ -564,6 +621,7 @@ void StartCompassTask(void const * argument)
   osThreadSuspend(compassTaskHandle);
   
   osThreadSuspend(defaultTaskHandle);
+  osThreadSuspend(laserTaskHandle);
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
   uint8_t inbuf[7];
   uint8_t outbuf[2];
@@ -588,7 +646,6 @@ void StartCompassTask(void const * argument)
   */
   
   
-  
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
   osThreadResume(defaultTaskHandle);
   osThreadResume(laserTaskHandle);
@@ -597,11 +654,15 @@ void StartCompassTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+    osThreadSuspend(laserTaskHandle);
+    osThreadSuspend(defaultTaskHandle);
     compass_takemeasurement(inbuf, outbuf);
     compass_processInput(inbuf, xyz, minmaxxyz);
     compass_getAngle(&angle, xyz);
     if(debugging)	compass_uart(xyz, msg, &angle);
+    compass_vibrateAngle(&angle);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+    osThreadResume(defaultTaskHandle);
     osThreadResume(laserTaskHandle);
     osThreadSuspend(compassTaskHandle);
   }

@@ -38,6 +38,8 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define LED_Pin GPIO_PIN_13
+#define LED_GPIO_Port GPIOC
 #define UART_TX_Laser_Pin GPIO_PIN_0
 #define UART_TX_Laser_GPIO_Port GPIOA
 #define UART_RX_Laser_Pin GPIO_PIN_1
@@ -58,8 +60,8 @@
 #define SPI_MISO_Compass_GPIO_Port GPIOB
 #define USART1_RX_Debug_Pin GPIO_PIN_7
 #define USART1_RX_Debug_GPIO_Port GPIOB
-#define LED_Pin GPIO_PIN_9
-#define LED_GPIO_Port GPIOB
+#define HEARTBEAT_Pin GPIO_PIN_9
+#define HEARTBEAT_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
