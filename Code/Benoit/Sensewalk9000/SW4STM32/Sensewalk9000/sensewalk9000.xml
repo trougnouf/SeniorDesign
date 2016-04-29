@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <targetDefinitions xmlns="http://openstm32.org/stm32TargetDefinitions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://openstm32.org/stm32TargetDefinitions stm32TargetDefinitions.xsd">
-  <board id="sensewalk9000">
+  <board id="Sensewalk9000">
     <name>Sensewalk9000</name>
-    <mcuId>stm32l476retx</mcuId>
+    <mcuId>STM32L476RETx</mcuId>  <!-- mcu-->
     <dbgIF>SWD</dbgIF>
-    <dbgDEV>ST-LinkV2</dbgDEV>
+    <dbgDEV />
   </board>
 </targetDefinitions>

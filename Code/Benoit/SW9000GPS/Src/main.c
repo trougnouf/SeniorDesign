@@ -86,65 +86,10 @@ void compass_takemeasurement(uint8_t * inbuf, uint8_t * outbuf);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-void HAL_GPIO_EXTI_Callback (uint16_t GPIO_Pin)
-{
-  if(blinking)	return;
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
-  if (GPIO_Pin == GPIO_PIN_0)
-  {
-    blinking = 128;
-  }
-  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11))
-  {
-    blinking = 64;
-  }
-  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_12))
-  {
-    blinking = 32;
-  }
-  HAL_Delay(200);
-  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
-  osThreadResume(defaultTaskHandle);
-  /*
-  osThreadSuspend(defaultTaskHandle);
-  //osThreadResume(thandlerTaskHandle);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
-  HAL_Delay(100);
-  if (GPIO_Pin == GPIO_PIN_0)
-{
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);	
-  HAL_Delay(100);
-  //osThreadSuspend(laserTaskHandle);
-  //osThreadSuspend(vibratorTaskHandle);
-  //HAL_GPIO_WritePin(VIBRATOR_GPIO_Port, VIBRATOR_Pin, GPIO_PIN_RESET);
-  
-  //HAL_Delay(100);
-  //osThreadResume(testTaskHandle);
-    }
-  osThreadResume(rLEDTaskHandle);
-  osThreadResume(bLEDTaskHandle);
-  osThreadResume(thandlerTaskHandle);
-  
-  */
-}
+
 
 /* USER CODE END 0 */
+
 int main(void)
 {
 
@@ -187,34 +132,6 @@ int main(void)
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
-  /* definition and creation of rLEDTask */
-  osThreadDef(rLEDTask, StartRLEDTask, osPriorityNormal, 0, 128);
-  rLEDTaskHandle = osThreadCreate(osThread(rLEDTask), NULL);
-
-  /* definition and creation of lLEDTask */
-  osThreadDef(lLEDTask, StartLLEDTask, osPriorityNormal, 0, 128);
-  lLEDTaskHandle = osThreadCreate(osThread(lLEDTask), NULL);
-
-  /* definition and creation of tLEDTask */
-  osThreadDef(tLEDTask, StartTLEDTask, osPriorityNormal, 0, 128);
-  tLEDTaskHandle = osThreadCreate(osThread(tLEDTask), NULL);
-
-  /* definition and creation of bLEDTask */
-  osThreadDef(bLEDTask, StartBLEDTask, osPriorityNormal, 0, 128);
-  bLEDTaskHandle = osThreadCreate(osThread(bLEDTask), NULL);
-
-  /* definition and creation of thandlerTask */
-  /*osThreadDef(thandlerTask, StartTHandlerTask, osPriorityNormal, 0, 128);
-  thandlerTaskHandle = osThreadCreate(osThread(thandlerTask), NULL);*/
-
-  /* definition and creation of compassTask */
-  /*osThreadDef(compassTask, StartCompassTask, osPriorityNormal, 0, 128);
-  compassTaskHandle = osThreadCreate(osThread(compassTask), NULL);*/
-
-  /* definition and creation of gpsTask */
-  /*osThreadDef(gpsTask, StartGPSTask, osPriorityNormal, 0, 128);
-  gpsTaskHandle = osThreadCreate(osThread(gpsTask), NULL);*/
-
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -255,16 +172,22 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
   RCC_OscInitStruct.MSICalibrationValue = 0;
   RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
+  RCC_OscInitStruct.PLL.PLLM = 1;
+  RCC_OscInitStruct.PLL.PLLN = 40;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_MSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0);
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4);
 
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_USART2;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
@@ -724,8 +647,6 @@ void angleToLED(uint16_t angle)
 void StartDefaultTask(void const * argument)
 {
 
-  
-
   /* USER CODE BEGIN 5 */
   
   double softlat;
@@ -734,7 +655,7 @@ void StartDefaultTask(void const * argument)
   /*
   	Calibrate compass
   */
-  
+  /*
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
   uint8_t inbuf[7];
   uint8_t outbuf[2];
@@ -752,7 +673,7 @@ void StartDefaultTask(void const * argument)
   
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
   
-  
+  */
   /*
   	Initialize GPS
   */
@@ -814,11 +735,12 @@ void StartDefaultTask(void const * argument)
       continue;
     }
     */
+    /*
     // get compass data
     compass_takemeasurement(inbuf, outbuf);
     compass_processInput(inbuf, xyz, minmaxxyz);
     compass_getAngle(&angle, xyz);
-    
+    */
     // get gps data
     //HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
     GPSReceive(&currentlatitud, &currentlongitud,in);
@@ -834,7 +756,7 @@ void StartDefaultTask(void const * argument)
     osDelay(100);
     HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
     osDelay(100);
-    
+    /*
     // button 1: calculate hard angle - real angle
     if(blinking == 128)	// but 1
     {
@@ -864,6 +786,7 @@ void StartDefaultTask(void const * argument)
     }
     //else	osDelay(1000);
     osThreadSuspend(defaultTaskHandle);
+    */
   }
   
   /* USER CODE END 5 */ 
@@ -1023,6 +946,17 @@ void StartCompassTask(void const * argument)
   /* USER CODE END StartCompassTask */
 }
 
+/* StartGPSTask function */
+void StartGPSTask(void const * argument)
+{
+  /* USER CODE BEGIN StartGPSTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartGPSTask */
+}
 
 #ifdef USE_FULL_ASSERT
 

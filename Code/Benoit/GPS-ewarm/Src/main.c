@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <stdint.h>
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -62,6 +63,8 @@ void StartDefaultTask(void const * argument);
 /* Private function prototypes -----------------------------------------------*/
 int calculateditance(double lat1, double lat2, double long1, double long2);
 int calculateangle( double lat1, double lat2, double long1, double long2);
+void Directions(double *Mylat, double *Mylong, char *in);
+void GPSReceive(double *Mylat, double *Mylong, char *in);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -247,31 +250,30 @@ void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 int calculateditance(double lat1, double lat2, double long1, double long2){
-  double  pi = 3.1415926535;
-  double distanceKm,distanceMiles,a,c;
-  
-  double R = 6371;
-  double dlong;
-  double dlat;
-  
-  lat1 = lat1*(pi/180);
-  lat2 = lat2*(pi/180);
-  
-  long1= long1*(pi/180);
-  long2= long2*(pi/180);
-  dlong = (long2 - long1);
-  dlat  = (lat2 - lat1);
-  
-  a = sin(dlat/2)*sin(dlat/2) + cos(lat1)*cos(lat2)*sin(dlong/2)*sin(dlong/2);
-  c = 2 * atan2( sqrt(a), sqrt(1-a) );
-  distanceKm = R * c;
-  
-  volatile double DistanceMeters= distanceKm*1000;
-  
-  
-  return DistanceMeters;
-  
-  
+        double  pi = 3.1415926535;
+        double distanceKm,a;
+        double c;
+
+        double R = 6371;
+        double dlong;
+        double dlat;
+
+        lat1 = lat1*(pi/180);
+        lat2 = lat2*(pi/180);
+
+        long1= long1*(pi/180);
+        long2= long2*(pi/180);
+        dlong = (long2 - long1);
+        dlat  = (lat2 - lat1);
+
+      a = sin(dlat/2)*sin(dlat/2) + cos(lat1)*cos(lat2)*sin(dlong/2)*sin(dlong/2);
+      c = 2 * atan2( sqrt(a), sqrt(1-a) );
+      distanceKm = R * c;
+
+      double DistanceMeters= distanceKm*1000;
+      return DistanceMeters;
+
+
 }
 
 int calculateangle( double lat1, double lat2, double long1, double long2){
@@ -281,8 +283,6 @@ int calculateangle( double lat1, double lat2, double long1, double long2){
   double degree;
   double dlong;
   double dlat;
-  
-  
   
   lat1 = lat1*(pi/180);
   lat2 = lat2*(pi/180);
@@ -297,11 +297,64 @@ int calculateangle( double lat1, double lat2, double long1, double long2){
   degree = round(angle*(180/pi));
   int degreerounded = degree;
   degreerounded = (degreerounded+360)%360;
-  
-  //printf(" The angle degree  is %d\n",degreerounded);
   return degreerounded;
   
 }
+void Directions(double *Mylat, double *Mylong, char *in)
+ {
+  char latitud[10];
+  char longitud[10];
+  
+  strncpy(latitud,in+18,9);    //extracting latitud from current position;
+  strncpy(longitud,in+30,10);  //extracting longitud
+  
+  *Mylong = atof(longitud)/100;
+  *Mylat =  atof(latitud)/100;
+       if(longitud[0]=='0')   // if longitud[0]==0,  this means the longitud is negative, thats why im multiplying by -1
+         {
+            *Mylong *= -1;
+         }	
+ }
+
+
+ void GPSReceive(double *Mylat, double *Mylong, char *in){
+ volatile HAL_StatusTypeDef status;
+ uint8_t inSize;
+ receivebeg:
+  
+  while(in[0] != '$')
+  {
+    status = HAL_UART_Receive(&huart1, &in[0], 1, 0x100);
+    if(status == HAL_TIMEOUT)
+      osDelay(500);
+  }
+      // Receive
+  
+  for (inSize = 1; inSize < 40 && status != HAL_TIMEOUT; inSize++)
+  //for (inSize = 1; inSize < 40; inSize++)
+  {
+      status = HAL_UART_Receive(&huart1, &in[inSize], 1, 0x100);
+    
+       if (in[inSize] == '\n')
+        break;
+  }
+  
+  
+  HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x100);
+  
+      if(in[3]== 'G' && in[4]=='G'  && in[5]=='A')
+     {
+        Directions(Mylat,Mylong, in);
+    
+     }
+  
+     else
+     {
+       in[0] = 0;
+        osDelay(2000);
+        goto receivebeg;
+      } 
+  }
 
 
 /* USER CODE END 4 */
@@ -323,35 +376,30 @@ void StartDefaultTask(void const * argument)
   }points;
   
   
-  points.firstpointlat =   28.600969;
-  points.firstpointlong = -81.197758;
+  
+  points.firstpointlat =   28.600640;
+  points.firstpointlong = -81.196905;
+  
+  points.firstpointlat =   28.348973;
+  points.firstpointlong = -81.125112;
+  //points.firstpointlat =   28.600969;
+  //points.firstpointlong = -81.197758;
   
   points.secondpointlat =  28.600642;
   points.secondpointlong = -81.196900;
   
-  points.thirdpointlat   = 28.601333;
-  points.thirdpointlong  = -81.196601;
+  //points.thirdpointlat   = 28.601333;
+  //points.thirdpointlong  = -81.196601;
   
   
+  char in[40];
   
   
-  
-  
-  
-  
-  volatile HAL_StatusTypeDef status;
-  char in[39];
-  
-  
-  char latitud[10];
-  char longitud[10];
+  //char latitud[10];
+  //char longitud[10];
   
   double  currentlatitud=0;
   double currentlongitud=0;
-  
-  
-  
-  
   char *pop = "Just testing123!\n\r";
   
   
@@ -361,108 +409,48 @@ void StartDefaultTask(void const * argument)
   uint8_t * nl2= "\r";
   uint8_t inSize;
   
+  int totaldistance =0;
+  int  test=0;
+  
   // Config GPS (GGA, .5Hz)
   uint8_t *onlygga ="$PMTK314,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29<CR><LF>";
-  uint8_t *updatarate = "$PMTK220,2000*1C<CR><LF>";   //5 times per second update  ---> 5Hz
+  uint8_t *updatarate = "$PMTK220,2000*1C<CR><LF>";   //.5 times per second update  ---> .5Hz
   HAL_UART_Transmit(&huart1, (uint8_t *)onlygga, 13, 0x1000);
   HAL_UART_Transmit(&huart1, (uint8_t *)nl,1, 0x1000);
   
+    // call Receive
+  int distancetosecondpoint=0;
+  int distancefirstpoint=100;
+  int distancetothirdpoint=0;
+  int approximation =20;
   
+  
+    GPSReceive(&currentlatitud, &currentlongitud,in);
+    distancefirstpoint = calculateditance(currentlatitud,points.firstpointlat,currentlongitud,points.firstpointlong);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
   for(;;)
   {
-    while(in[0] != '$')
-    {
-      status = HAL_UART_Receive(&huart1, &in[0], 1, 0x100);
-      if(status == HAL_TIMEOUT)
-	osDelay(500);
-    }
-    // Receive
+  
+
     
-    
-    
-    for (inSize = 1; inSize < 40 && status != HAL_TIMEOUT; inSize++)
-    {
-      status = HAL_UART_Receive(&huart1, &in[inSize], 1, 0x100);
-      
-      if (in[inSize] == '\n')
-	
-	break;
-    }
-    
-    
-    //HAL_UART_Transmit(&huart2, (uint8_t *)pop, 13, 0x1000);
-    
-    HAL_UART_Transmit(&huart2, (uint8_t *)in, inSize-1, 0x100);
-    
-    
-    
-    
-    if(in[3]== 'G' && in[4]=='G' && in[5]=='A')
-    {
-      
-      
-      
-      
-      strncpy(latitud,in+18,9);    //extracting latitud from current position;
-      strncpy(longitud,in+30,10);  //extracting longitud
-      
-      currentlongitud = atof(longitud)/100;
-      currentlatitud = atof(latitud)/100;
-      if(longitud[0]=='0')   // if longitud[0]==0,  this means the longitud is negative, thats why im multiplying by -1
+      if(distancefirstpoint > approximation)
       {
-	
-	currentlongitud *= -1;
-	
-	
-      }	
+	osDelay(1000);
+	GPSReceive(&currentlatitud, &currentlongitud,in);
+    int distancefirstpoint = calculateditance(currentlatitud,points.firstpointlat,currentlongitud,points.firstpointlong);
+      }
+      else
+      {
+	HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+	osDelay(500);
+	HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+	osDelay(500);
+      }
       
-    }
-    
-    else
-    {
-      osDelay(2000);
-      continue;
-    }
-    
-    
-    
-      double  approximation =6;
-      
-      //calculate distance from current location to the fisrt coordinate
-      int distancetofirstpoint = calculateditance(currentlatitud,points.firstpointlat,currentlongitud,points.firstpointlong);
-      int angleToFirstPoint = calculateangle(currentlatitud,points.firstpointlat,currentlongitud,points.firstpointlong);
-      if(distancetofirstpoint <= approximation){
-	// check next direction
-	printf("close to point one");
 
     
   }
-
   
-  
-  
-  //???
-  {
-    
-    
-    HAL_UART_Transmit(&huart2, (uint8_t *)nl,1, 0x1000);
-    HAL_UART_Transmit(&huart2, (uint8_t *)latitud,9, 0x100);
-    HAL_UART_Transmit(&huart2, (uint8_t *)nl,1, 0x1000);
-    HAL_UART_Transmit(&huart2, (uint8_t *)nl,1, 0x1000);
-    HAL_UART_Transmit(&huart2, (uint8_t *)longitud,10, 0x100);
-    HAL_UART_Transmit(&huart2, (uint8_t *)nl,1, 0x1000);
-    //HAL_UART_Transmit(&huart2, (uint8_t *)s,2, 0x100);
-    HAL_UART_Transmit(&huart2, (uint8_t *)nl,1, 0x1000);
-    //HAL_UART_Transmit(&huart2, (uint8_t *)lat2,2, 0x1000);
-    //HAL_UART_Transmit(&huart2,(uint32_t *)lat2,7, 0x1000);
-    //HAL_UART_Transmit(&huart2, (uint32_t *)distanceKm,15, 0x1000);
-  }
-  
-  in[0] = '0';
-  osDelay(150);
-  
-  
-}
 
 /* USER CODE END 5 */ 
 }
